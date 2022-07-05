@@ -13,7 +13,7 @@ class CreateRoastLevelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('roast_levels', function (Blueprint $table) {
+        Schema::create('roasts', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->string('name');
         });

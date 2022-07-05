@@ -16,8 +16,8 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->unsignedTinyInteger('roast_level_id');
-            $table->foreign('roast_level_id')->references('id')->on('roast_levels');
+            $table->unsignedTinyInteger('roast_id');
+            $table->foreign('roast_id')->references('id')->on('roasts');
             $table->unsignedTinyInteger('type_id');
             $table->foreign('type_id')->references('id')->on('types');
             $table->text('description');
