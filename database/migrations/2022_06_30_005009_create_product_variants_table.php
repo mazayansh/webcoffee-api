@@ -17,7 +17,7 @@ class CreateProductVariantsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
-            $table->string('weight');
+            $table->integer('weight');
             $table->decimal('price', 10, 2);
             $table->timestamps();
         });

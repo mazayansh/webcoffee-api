@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Roast\RoastController;
 use App\Http\Controllers\Type\TypeController;
+use App\Http\Controllers\Product\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,4 +31,5 @@ Route::prefix('v1')->group(function () {
 
     Route::get('roasts', [RoastController::class, 'index']);
     Route::get('types', [TypeController::class, 'index']);
+    Route::get('products', [ProductController::class, 'index']);
 });

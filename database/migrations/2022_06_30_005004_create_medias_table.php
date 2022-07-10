@@ -19,7 +19,7 @@ class CreateMediasTable extends Migration
             $table->foreign('product_id')->references('id')->on('products');
             $table->string('name');
             $table->text('path');
-            $table->unsignedTinyInteger('type');
+            $table->string('type');
             $table->unsignedTinyInteger('is_featured');
             $table->timestamps();
         });
