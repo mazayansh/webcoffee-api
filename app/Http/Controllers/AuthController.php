@@ -8,15 +8,6 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function login(LoginRequest $request)
-    {
-        if (! $token = auth()->attempt($request->validated())) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        return $this->createNewToken($token);
-    }
-
     public function register(RegisterRequest $request)
     {
         $user = User::create(array_merge(
@@ -28,6 +19,15 @@ class AuthController extends Controller
             'message' => 'User successfully registered',
             'user' => $user
         ], 201);
+    }
+
+    public function login(LoginRequest $request)
+    {
+        if (! $token = auth()->attempt($request->validated())) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $this->createNewToken($token);
     }
 
     public function logout() {
