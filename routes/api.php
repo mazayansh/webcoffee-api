@@ -19,14 +19,15 @@ use App\Http\Controllers\Product\ProductController;
 */
 
 Route::prefix('v1')->group(function () {
+    Route::post('/auth/register', [AuthController::class, 'register']);
+
     Route::middleware(['api'])->group(function () {
         Route::prefix('auth')->group(function () {
             Route::post('/login', [AuthController::class, 'login']);
-            Route::post('/register', [AuthController::class, 'register']);
             Route::post('/logout', [AuthController::class, 'logout']);
             Route::post('/refresh', [AuthController::class, 'refresh']);
-            Route::get('/user-profile', [AuthController::class, 'userProfile']);
         });
+        Route::get('/user-profile', [AuthController::class, 'userProfile']);
     });
 
     Route::get('roasts', [RoastController::class, 'index']);

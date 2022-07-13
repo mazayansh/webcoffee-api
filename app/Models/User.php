@@ -24,7 +24,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'customer_id',
         'email',
         'password',
     ];
@@ -47,6 +47,8 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $with = ['customer'];
 
     public function customer(): BelongsTo
     {
