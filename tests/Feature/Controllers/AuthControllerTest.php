@@ -11,7 +11,6 @@ use App\Repositories\CustomerRepository;
 use App\Services\UserService;
 use App\Models\User;
 use App\Models\Customer;
-use Illuminate\Support\Facades\Log;
 
 class AuthControllerTest extends TestCase
 {
@@ -41,9 +40,6 @@ class AuthControllerTest extends TestCase
             'email' => 'user@example.com',
             'password' => '12345678'
         ]);
-        // $token = json_decode($loginResponse->getContent())->access_token;
-
-        // return $token;
     }
 
     public function test_register_validation_failed()

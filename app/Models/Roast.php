@@ -11,6 +11,9 @@ class Roast extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+    public $timestamps = false;
+
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
