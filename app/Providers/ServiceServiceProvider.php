@@ -7,6 +7,8 @@ use App\Interfaces\UserServiceInterface;
 use App\Services\UserService;
 use App\Interfaces\RoastServiceInterface;
 use App\Services\RoastService;
+use App\Interfaces\TypeServiceInterface;
+use App\Services\TypeService;
 
 class ServiceServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,7 @@ class ServiceServiceProvider extends ServiceProvider
     {
         $this->app->bind(UserServiceInterface::class, UserService::class);
         $this->app->bind(RoastServiceInterface::class, RoastService::class);
+        $this->app->bind(TypeServiceInterface::class, TypeService::class);
     }
 
     /**

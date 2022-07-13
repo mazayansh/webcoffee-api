@@ -9,6 +9,8 @@ use App\Interfaces\CustomerRepositoryInterface;
 use App\Repositories\CustomerRepository;
 use App\Interfaces\RoastRepositoryInterface;
 use App\Repositories\RoastRepository;
+use App\Interfaces\TypeRepositoryInterface;
+use App\Repositories\TypeRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -22,6 +24,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(CustomerRepositoryInterface::class, CustomerRepository::class);
         $this->app->bind(RoastRepositoryInterface::class, RoastRepository::class);
+        $this->app->bind(TypeRepositoryInterface::class, TypeRepository::class);
     }
 
     /**
