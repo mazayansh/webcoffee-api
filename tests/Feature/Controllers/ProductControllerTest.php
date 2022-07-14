@@ -93,4 +93,35 @@ class ProductControllerTest extends TestCase
                     )
             );
     }
+
+    public function test_get_single_product_by_id_success()
+    {
+        $response = $this->getJson('/api/v1/products/3');
+
+        $response->assertStatus(200)
+            ->assertJson(fn (AssertableJson $json) =>
+                $json->has('data', fn ($json) =>
+                    $json->hasAll([
+                            'id',
+                            'name',
+                            'slug',
+                            'aftertaste',
+                            'description',
+                            'roast',
+                            'type',
+                            'product_variants'
+                        ])
+                        ->where('id', 3)
+                        ->where('name', 'DECAF ESPRESSO ROAST COFFEE')
+                        ->etc()
+                )
+            );
+    }
+
+    public function test_get_single_product_by_id_not_found()
+    {
+        $response = $this->getJson('/api/v1/products/1003');
+
+        $response->assertStatus(404)->assertJson(['message' => 'Product not found']);
+    }
 }

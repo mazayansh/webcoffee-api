@@ -35,4 +35,5 @@ Route::prefix('v1')->group(function () {
     Route::get('roasts', [RoastController::class, 'index']);
     Route::get('types', [TypeController::class, 'index']);
     Route::get('products', [ProductController::class, 'index']);
+    Route::get('products/{id}', [ProductController::class, 'show']);
 });

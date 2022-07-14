@@ -15,4 +15,9 @@ class ProductRepository implements ProductRepositoryInterface
                     ->filterProduct($query_params['filter'] ?? null)
                     ->paginate(20);
     }
+
+    public function getById(int $id)
+    {
+        return Product::findOrFail($id)->load(['roast','type','productVariants']);
+    }
 }
