@@ -3,14 +3,20 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Interfaces\UserRepositoryInterface;
-use App\Repositories\UserRepository;
-use App\Interfaces\CustomerRepositoryInterface;
-use App\Repositories\CustomerRepository;
-use App\Interfaces\RoastRepositoryInterface;
-use App\Repositories\RoastRepository;
-use App\Interfaces\TypeRepositoryInterface;
-use App\Repositories\TypeRepository;
+use App\Interfaces\{
+    UserRepositoryInterface,
+    CustomerRepositoryInterface,
+    RoastRepositoryInterface,
+    TypeRepositoryInterface,
+    ProductRepositoryInterface
+};
+use App\Repositories\{
+    UserRepository,
+    CustomerRepository,
+    RoastRepository,
+    TypeRepository,
+    ProductRepository
+};
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -25,6 +31,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CustomerRepositoryInterface::class, CustomerRepository::class);
         $this->app->bind(RoastRepositoryInterface::class, RoastRepository::class);
         $this->app->bind(TypeRepositoryInterface::class, TypeRepository::class);
+        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
     }
 
     /**

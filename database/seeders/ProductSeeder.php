@@ -18,6 +18,7 @@ class ProductSeeder extends Seeder
         DB::table('products')->insert([
             [
                 'name' => 'BALI BLUE MOON SINGLE ORIGIN DARK ROAST COFFEE',
+                'slug' => 'bali-blue-moon-single-origin-dark-roast-coffee',
                 'roast_id' => 3,
                 'type_id' => 8,
                 'description' => '<b>Profile</b>: Fragrant toffee aroma with flavors of walnuts and semi-sweet chocolate and a crisp black cherry finish.
@@ -31,6 +32,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name' => 'BRAZIL CERRADO DARK GROUND SINGLE ORIGIN COFFEE',
+                'slug' => 'brazil-cerrado-dark-ground-single-origin-coffee',
                 'roast_id' => 3,
                 'type' => 8,
                 'description' => '<b>Profile</b>: Dark Roast full-bodied with a bold aroma, earthy flavor & bittersweet finish.
@@ -41,6 +43,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name' => 'DECAF ESPRESSO ROAST COFFEE',
+                'slug' => 'decaf-esspresso-roast-coffee',
                 'roast_id' => 3,
                 'type' => 1,
                 'description' => '<b>Profile</b>: Velvety body with caramel like aroma, earthy flavor and a bittersweet finish without the caffeine. This blend captures a full range of origin characteristics from crisp and bright to syrupy, earthy and full bodied. The range of roast degrees lends more complexity and versatility.
@@ -54,6 +57,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name' => 'BRAZIL CERRADO LIGHT ROAST SINGLE ORIGIN COFFEE',
+                'slug' => 'brazil-cerrado-light-roast-single-origin-coffee',
                 'roast_id' => 1,
                 'type' => 8,
                 'description' => '<b>Profile<b>: Soft bodied with earthy flavor and subtle walnut notes.
@@ -67,6 +71,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name' => 'COSTA RICA LA MINITA SINGLE ORIGIN RESERVE COFFEE',
+                'slug' => 'costa-rica-la-minita-single-origin-reserve-coffee',
                 'roast_id' => 1,
                 'type' => 6,
                 'description' => '<b>Profile</b>: Rich & Smooth
@@ -79,6 +84,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name' => 'JAMAICA BLUE MOUNTAIN SINGLE ORIGIN RESERVE COFFEE 100%',
+                'slug' => 'jamaica-blue-mountain-single-origin-reserve-coffee',
                 'roast_id' => 1,
                 'type' => 6,
                 'description' => '<b>Place</b>: Our Jamaica Blue Mountain coffee is grown at the Mavis Bank Estate \- one of four certified coffee producers of Jamaica Blue Mountain coffee. Established in 1885, this estate utilizes only spring water to sort the green beans, which are then \'put to sleep\' for 3-4 months at 3000 feet where the coffee begins to develop, becoming a greenish blue color. The coffee trees are located on the East & West sides of the mountain so that they receive only 4-5 hours of direct sunlight per day. Hence the beans mature at a much slower rate (taking 7-8 months, rather than the usual 4-5).
@@ -91,8 +97,8 @@ class ProductSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
-                'name' => 'COLD BREW COARSE GROUND COFFEE BLEND WITH CHICORY
-                ',
+                'name' => 'COLD BREW COARSE GROUND COFFEE BLEND WITH CHICORY',
+                'slug' => 'cold-brew-coarse-ground-coffee-blend-with-chicory',
                 'roast_id' => 2,
                 'type' => 2,
                 'description' => 'Cold Brew Ground Coffee with chicory from The Coffee Bean & Tea Leaf was made for (you guessed it) cold brewing. This is the same product we use in our cafes for our popular cold brew coffee drinks. This product is a coarse ground coffee which is the recommended grind for cold brew coffee. We combine some of the finest Arabica coffee in the world including our light roast coffee beans from Ethiopia and our Blue Moon dark roast beans from Indonesia to create this tantalizing medium roast coffee blend. By adding a touch of chicory root, this ground craft coffee product has a slightly sweet toffee aroma with fruit and walnut notes and offers a spicy smooth finish. Chicory got its start with coffee blends in France adding a subtle culinary twist on coffee and also became popular with coffee blends in New Orleans. Try some NOLA chicory cold brew ground coffee today!',
@@ -102,6 +108,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name' => 'COOKIE BUTTER MEDIUM ROAST GROUND COFFEE - LIMITED EDITION',
+                'slug' => 'cookie-butter-medium-roast-ground-coffee-limited-edition',
                 'roast_id' => 2,
                 'type' => 2,
                 'description' => 'Cookie Butter Coffee is a retuning holiday favorite. This seasonal ground coffee has cinnamon and creamy cookie butter notes with a snappy ginger finish. Cookie Butter Coffee is a medium roast flavored with the season\'s insprired cinnamon and spices. This product comes in a gift-worthy beautiful 16oz package.
@@ -112,6 +119,7 @@ class ProductSeeder extends Seeder
             ],
             [
                 'name' => 'HAZELNUT COFFEE',
+                'slug' => 'hazelnut-coffee',
                 'roast_id' => 2,
                 'type' => 2,
                 'description' => 'Hazelnut flavored ground coffee by The Coffee Bean & Tea Leaf is an earthy, full-bodied blend that lets the intense aroma of roasted hazelnuts shine.',

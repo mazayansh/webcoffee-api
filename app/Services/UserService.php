@@ -2,11 +2,15 @@
 
 namespace App\Services;
 
-use App\Interfaces\UserRepositoryInterface;
-use App\Interfaces\CustomerRepositoryInterface;
-use App\Interfaces\UserServiceInterface;
-use App\Http\Requests\RegisterRequest;
-use App\Http\Requests\LoginRequest;
+use App\Interfaces\{
+    UserRepositoryInterface,
+    CustomerRepositoryInterface,
+    UserServiceInterface
+};
+use App\Http\Requests\{
+    RegisterRequest,
+    LoginRequest
+};
 
 class UserService implements UserServiceInterface
 {

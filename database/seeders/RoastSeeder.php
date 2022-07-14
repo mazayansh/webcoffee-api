@@ -17,13 +17,16 @@ class RoastSeeder extends Seeder
     {
         DB::table('roasts')->insert([
             [
-                'name' => 'Light'
+                'name' => 'Light',
+                'slug' => 'light'
             ],
             [
-                'name' => 'Medium'
+                'name' => 'Medium',
+                'slug' => 'medium'
             ],
             [
-                'name' => 'Dark'
+                'name' => 'Dark',
+                'slug' => 'dark'
             ]
         ]);
     }

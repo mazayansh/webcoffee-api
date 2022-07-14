@@ -16,6 +16,7 @@ class CreateRoastsTable extends Migration
         Schema::create('roasts', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->string('name');
+            $table->string('slug')->unique();
         });
     }
 

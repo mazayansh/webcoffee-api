@@ -2,10 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Roast\RoastController;
-use App\Http\Controllers\Type\TypeController;
-use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\{
+    AuthController,
+    Roast\RoastController,
+    Type\TypeController,
+    Product\ProductController
+};
 
 /*
 |--------------------------------------------------------------------------

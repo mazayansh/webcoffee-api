@@ -17,28 +17,36 @@ class TypeSeeder extends Seeder
     {
         DB::table('types')->insert([
             [
-                'name' => 'Decaffeinated'
+                'name' => 'Decaffeinated',
+                'slug' => 'decaffeinated'
             ],
             [
-                'name' => 'Flavored'
+                'name' => 'Flavored',
+                'slug' => 'flavored'
             ],
             [
-                'name' => 'Ground'
+                'name' => 'Ground',
+                'slug' => 'ground'
             ],
             [
-                'name' => 'Organic'
+                'name' => 'Organic',
+                'slug' => 'organic'
             ],
             [
-                'name' => 'Regular'
+                'name' => 'Regular',
+                'slug' => 'regular'
             ],
             [
-                'name' => 'Reserved'
+                'name' => 'Reserved',
+                'slug' => 'reserved'
             ],
             [
-                'name' => 'Seasonal'
+                'name' => 'Seasonal',
+                'slug' => 'seasonal'
             ],
             [
-                'name' => 'Single Origin'
+                'name' => 'Single Origin',
+                'slug' => 'single-origin'
             ],
         ]);
     }

@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
-use App\Interfaces\RoastServiceInterface;
-use App\Interfaces\RoastRepositoryInterface;
+use App\Interfaces\{
+    RoastServiceInterface,
+    RoastRepositoryInterface
+};
 
 class RoastService implements RoastServiceInterface
 {

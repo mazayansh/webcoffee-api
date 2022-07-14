@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
-use App\Interfaces\TypeServiceInterface;
-use App\Interfaces\TypeRepositoryInterface;
+use App\Interfaces\{
+    TypeServiceInterface,
+    TypeRepositoryInterface
+};
 
 class TypeService implements TypeServiceInterface
 {
