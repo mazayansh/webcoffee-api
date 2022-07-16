@@ -7,10 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Cart;
 use App\Models\ProductVariant;
+use App\Enum\GrindSizeEnum;
 
 class CartItem extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'cart_id',
+        'product_variant_id',
+        'quantity',
+        'grind_size'
+    ];
+
+    protected $casts = [
+        'grind_size' => GrindSizeEnum::class
+    ];
 
     public function cart(): BelongsTo
     {

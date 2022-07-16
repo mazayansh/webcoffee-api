@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
             TypeSeeder::class,
             ProductSeeder::class,
             ProductVariantSeeder::class,
-            MediaSeeder::class
+            MediaSeeder::class,
+            CartItemSeeder::class
         ]);
     }
 }

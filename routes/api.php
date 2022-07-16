@@ -6,7 +6,8 @@ use App\Http\Controllers\{
     AuthController,
     Roast\RoastController,
     Type\TypeController,
-    Product\ProductController
+    Product\ProductController,
+    Cart\CartController
 };
 
 /*
@@ -21,8 +22,8 @@ use App\Http\Controllers\{
 */
 
 Route::prefix('v1')->group(function () {
+    // User auth
     Route::post('/auth/register', [AuthController::class, 'register']);
-
     Route::middleware(['api'])->group(function () {
         Route::prefix('auth')->group(function () {
             Route::post('/login', [AuthController::class, 'login']);
@@ -31,9 +32,14 @@ Route::prefix('v1')->group(function () {
         });
         Route::get('/user-profile', [AuthController::class, 'userProfile']);
     });
-
+    // Roasts level
     Route::get('roasts', [RoastController::class, 'index']);
+    // Coffee types
     Route::get('types', [TypeController::class, 'index']);
+    // Product
     Route::get('products', [ProductController::class, 'index']);
     Route::get('products/{id}', [ProductController::class, 'show']);
+    // Cart
+    Route::post('cart', [CartController::class, 'store']);
+    Route::get('cart', [CartController::class, 'show']);
 });

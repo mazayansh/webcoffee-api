@@ -8,14 +8,18 @@ use App\Interfaces\{
     CustomerRepositoryInterface,
     RoastRepositoryInterface,
     TypeRepositoryInterface,
-    ProductRepositoryInterface
+    ProductRepositoryInterface,
+    CartRepositoryInterface,
+    CartItemRepositoryInterface
 };
 use App\Repositories\{
     UserRepository,
     CustomerRepository,
     RoastRepository,
     TypeRepository,
-    ProductRepository
+    ProductRepository,
+    CartRepository,
+    CartItemRepository
 };
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -32,6 +36,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(RoastRepositoryInterface::class, RoastRepository::class);
         $this->app->bind(TypeRepositoryInterface::class, TypeRepository::class);
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+        $this->app->bind(CartRepositoryInterface::class, CartRepository::class);
+        $this->app->bind(CartItemRepositoryInterface::class, CartItemRepository::class);
     }
 
     /**

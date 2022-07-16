@@ -7,13 +7,17 @@ use App\Interfaces\{
     UserServiceInterface,
     RoastServiceInterface,
     TypeServiceInterface,
-    ProductServiceInterface
+    ProductServiceInterface,
+    CartServiceInterface,
+    CartItemServiceInterface
 };
 use App\Services\{
     UserService,
     RoastService,
     TypeService,
-    ProductService
+    ProductService,
+    CartService,
+    CartItemService
 };
 
 class ServiceServiceProvider extends ServiceProvider
@@ -29,6 +33,8 @@ class ServiceServiceProvider extends ServiceProvider
         $this->app->bind(RoastServiceInterface::class, RoastService::class);
         $this->app->bind(TypeServiceInterface::class, TypeService::class);
         $this->app->bind(ProductServiceInterface::class, ProductService::class);
+        $this->app->bind(CartServiceInterface::class, CartService::class);
+        $this->app->bind(CartItemServiceInterface::class, CartItemService::class);
     }
 
     /**
