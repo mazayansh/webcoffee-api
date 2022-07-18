@@ -7,7 +7,8 @@ use App\Http\Controllers\{
     Roast\RoastController,
     Type\TypeController,
     Product\ProductController,
-    Cart\CartController
+    Cart\CartController,
+    Cart\CartItemController
 };
 
 /*
@@ -33,13 +34,18 @@ Route::prefix('v1')->group(function () {
         Route::get('/user-profile', [AuthController::class, 'userProfile']);
     });
     // Roasts level
-    Route::get('roasts', [RoastController::class, 'index']);
+    Route::get('/roasts', [RoastController::class, 'index']);
     // Coffee types
-    Route::get('types', [TypeController::class, 'index']);
+    Route::get('/types', [TypeController::class, 'index']);
     // Product
     Route::get('products', [ProductController::class, 'index']);
     Route::get('products/{id}', [ProductController::class, 'show']);
     // Cart
-    Route::post('cart', [CartController::class, 'store']);
-    Route::get('cart', [CartController::class, 'show']);
+    Route::prefix('/cart')->group(function () {
+        Route::post('/', [CartController::class, 'store']);
+        Route::get('/', [CartController::class, 'show']);
+        Route::post('/cart-items', [CartItemController::class, 'store']);
+        Route::put('/cart-items/{cart_item_id}', [CartItemController::class, 'update']);
+        Route::delete('/cart-items/{cart_item_id}', [CartItemController::class, 'destroy']);
+    });
 });

@@ -18,4 +18,21 @@ class CartItemService implements CartItemServiceInterface
     {
         return $this->cartItemRepository->getAllByCartId($cartId);
     }
+
+    public function addToCart(string $cartId, array $cartItemDetails)
+    {
+        return $this->cartItemRepository->save(
+                ['cart_id' => $cartId] + $cartItemDetails
+            );
+    }
+
+    public function updateCartItem(string $cartItemId, array $cartItemDetails)
+    {
+        return $this->cartItemRepository->update($cartItemId, $cartItemDetails);
+    }
+
+    public function removeFromCart(string $cartItemId): bool
+    {
+        return $this->cartItemRepository->remove($cartItemId);
+    }
 }

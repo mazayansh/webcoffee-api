@@ -32,6 +32,10 @@ class CartController extends Controller
         $cartId = $this->cartCookie->getValue();
         $cartItems = $this->cartItemService->getListFromCart($cartId);
 
-        return CartItemResource::collection($cartItems);
+        return response()
+                ->json([
+                    'data' => CartItemResource::collection($cartItems)
+                ], 200)
+                ->withCookie($this->cartCookie);
     }
 }

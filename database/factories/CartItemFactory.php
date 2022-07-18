@@ -20,7 +20,7 @@ class CartItemFactory extends Factory
             'cart_id' => \App\Models\Cart::inRandomOrder()->first()->id,
             'product_variant_id' => \App\Models\ProductVariant::inRandomOrder()->first()->id,
             'quantity' => rand(1, 10),
-            'grind_size' => \App\Enum\GrindSizeEnum::random(),
+            'grind_size' => \App\Enums\GrindSizeEnum::random(),
             'created_at' => now(),
             'updated_at' => null
         ];

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Cart;
 use App\Models\ProductVariant;
-use App\Enum\GrindSizeEnum;
+use App\Enums\GrindSizeEnum;
 
 class CartItem extends Model
 {

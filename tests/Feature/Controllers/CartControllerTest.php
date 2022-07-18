@@ -45,7 +45,7 @@ class CartControllerTest extends TestCase
         return $cart->id;
     }
 
-    private function insertRecord(): void
+    private function insertUserRecord(): void
     {
         Customer::factory()->create([
             'first_name' => 'User',
@@ -62,7 +62,7 @@ class CartControllerTest extends TestCase
 
     private function generateAccessToken(): void
     {
-        $this->insertRecord();
+        $this->insertUserRecord();
 
         $userService = new UserService(new UserRepository, new CustomerRepository);
         $loginResponse = $userService->login([
@@ -106,14 +106,15 @@ class CartControllerTest extends TestCase
         $response = $this->getJson('/api/v1/cart');
 
         $response->assertStatus(200)
-            ->assertJson(fn (AssertableJson $json) =>
-                $json->has('data', 3, fn ($json) => 
-                    $json->hasAll([
-                            'id','cart_id','product_id','product_name','grind_size','weight','quantity','price'
-                        ])
-                        ->where('cart_id', $cartId)
-                )
-            );
+                ->assertCookieNotExpired('KOPISLUR-CART-ID')
+                ->assertJson(fn (AssertableJson $json) =>
+                    $json->has('data', 3, fn ($json) => 
+                        $json->hasAll([
+                                'id','cart_id','product_id','product_name','grind_size','weight','quantity','price'
+                            ])
+                            ->where('cart_id', $cartId)
+                    )
+                );
     }
 
     public function test_get_cart_items_by_cart_id_no_cookie_ref_success()
@@ -121,8 +122,9 @@ class CartControllerTest extends TestCase
         $response = $this->get('/api/v1/cart');
 
         $response->assertStatus(200)
-            ->assertJson(fn (AssertableJson $json) =>
-                $json->has('data', 0)
-            );
+                ->assertCookieNotExpired('KOPISLUR-CART-ID')
+                ->assertJson(fn (AssertableJson $json) =>
+                    $json->has('data', 0)
+                );
     }
 }
