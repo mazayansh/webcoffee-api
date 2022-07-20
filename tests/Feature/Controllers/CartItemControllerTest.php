@@ -21,6 +21,8 @@ class CartItemControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    private $cartId;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -38,15 +40,25 @@ class CartItemControllerTest extends TestCase
         CartItem::factory()->count(3)->create([
             'cart_id'  => $cart->id
         ]);
+
+        $this->cartId = $cart->id;
     }
 
     public function test_add_cart_item_success()
     {
-        $response = $this->postJson('/api/v1/cart/cart-items', [
-                        'product_variant_id' => 2,
-                        'grind_size' => 'coarse',
-                        'quantity' => 2
-                    ]);
+        $response = $this->disableCookieEncryption()
+                        ->withHeaders([
+                            'accept' => 'application/json'
+                        ])
+                        ->withCookie(
+                            config('constants.cookie_name.cart'), 
+                            $this->cartId
+                        )
+                        ->post('/api/v1/cart/cart-items', [
+                            'product_variant_id' => 2,
+                            'grind_size' => 'coarse',
+                            'quantity' => 2
+                        ]);
                     
         $response->assertStatus(201)
                 ->assertJson(fn (AssertableJson $json) =>
@@ -64,8 +76,8 @@ class CartItemControllerTest extends TestCase
     public function test_update_cart_item_success()
     {
         $response = $this->putJson('/api/v1/cart/cart-items/2', [
-                    'quantity' => 24
-                ]);
+                            'quantity' => 24
+                        ]);
                 
         $response->assertStatus(200)
             ->assertJson(['updated' => true]);
@@ -74,8 +86,8 @@ class CartItemControllerTest extends TestCase
     public function test_update_cart_item_failed_not_found()
     {
         $response = $this->putJson('/api/v1/cart/cart-items/200', [
-                    'quantity' => 24
-                ]);
+                            'quantity' => 24
+                        ]);
                 
         $response->assertStatus(404)
             ->assertJson(['updated' => false]);

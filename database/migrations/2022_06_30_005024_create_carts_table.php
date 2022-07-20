@@ -17,6 +17,7 @@ class CreateCartsTable extends Migration
             $table->uuid('id')->primary();
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->timestamp('expired_at')->nullable();
             $table->timestamps();
         });
     }

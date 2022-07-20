@@ -4,12 +4,17 @@ namespace App\Services;
 
 use App\Interfaces\{
     CartServiceInterface,
-    CartRepositoryInterface
+    CartRepositoryInterface,
+    CartItemRepositoryInterface
 };
+use Carbon\Carbon;
 
 class CartService implements CartServiceInterface
 {
-    public function __construct(public CartRepositoryInterface $cartRepository)
+    public function __construct(
+        public CartRepositoryInterface $cartRepository,
+        public CartItemRepositoryInterface $cartItemRepository
+    )
     {
 
     }
@@ -18,6 +23,7 @@ class CartService implements CartServiceInterface
     {
         $cart = $this->cartRepository->save([
             'user_id' => optional(auth()->user())->id ?? null,
+            'expired_at' => Carbon::now()->addWeeks(2),
             'created_at' => now(),
             'updated_at' => null
         ]);
@@ -25,25 +31,30 @@ class CartService implements CartServiceInterface
         return $cart;
     }
 
-    public function getCartCookie()
+    public function generateCartCookie()
     {
-        if (request()->cookie('KOPISLUR-CART-ID')) {
-            return $this->generateCartCookie(request()->cookie('KOPISLUR-CART-ID'));
-        } else {
-            if (auth()->user()) {
-                if ($cartId = optional(auth()->user()->cart)->id) {
-                    return $this->generateCartCookie($cartId);
-                }
+        if (auth()->user()) {
+            if ($cartId = optional(auth()->user()->cart)->id) {
+                return cookie(
+                        config('constants.cookie_name.cart'), 
+                        $cartId, 
+                        60*24*14
+                    );
             }
-            $cart = $this->create();
-            return $this->generateCartCookie($cart->id);
         }
-    }
 
-    public function generateCartCookie(string $cartId)
-    {
         return cookie(
-            'KOPISLUR-CART-ID', $cartId, 60*24*30*6
-        );
+                config('constants.cookie_name.cart'), 
+                $this->create()->id, 
+                60*24*14
+            );
+    }
+    
+    public function isCartNotEmpty(string $cartId): bool
+    {
+        if (is_null($cartId)) {
+            return false;
+        }
+        return $this->cartItemRepository->checkIfCartHaveItems($cartId);
     }
 }

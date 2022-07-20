@@ -12,6 +12,7 @@ use App\Interfaces\{
     CartItemServiceInterface
 };
 use App\Http\Resources\CartItemResource;
+use App\Helpers\CookieHelper;
 
 class CartItemController extends Controller
 {
@@ -25,8 +26,9 @@ class CartItemController extends Controller
 
     public function store(AddCartItemRequest $request)
     {
-        $cartCookie = $this->cartService->getCartCookie();
-        $cartId = $cartCookie->getValue();
+        $cartId = request()->cookie(config('constants.cookie_name.cart')) 
+                    ?? 
+                    CookieHelper::getCookieValueFromQueue(config('constants.cookie_name.cart'));
         $newCartItem = $this->cartItemService
                             ->addToCart(
                                 $cartId, 
@@ -37,8 +39,7 @@ class CartItemController extends Controller
                             'created' => true,
                             'message' => 'Cart item successfully added',
                             'cart_item' => new CartItemResource($newCartItem)
-                        ], 201)
-                        ->withCookie($cartCookie);
+                        ], 201);
     }
 
     public function update(UpdateCartItemRequest $request, $cartItemId)

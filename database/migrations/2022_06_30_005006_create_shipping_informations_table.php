@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateShippingAddressesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,19 @@ class CreateShippingAddressesTable extends Migration
      */
     public function up()
     {
-        Schema::create('shipping_addresses', function (Blueprint $table) {
+        Schema::create('shipping_informations', function (Blueprint $table) {
             $table->increments('id');
+            $table->uuidMorphs('shippingable');
             $table->string('first_name');
-            $table->string('last_name');
+            $table->string('last_name')->nullable();
             $table->string('email');
             $table->string('phone')->nullable();
-            $table->text('address_1');
-            $table->text('address_2')->nullable();
-            $table->text('address_3')->nullable();
+            $table->text('address');
             $table->string('state');
             $table->string('city');
             $table->string('postcode');
+            $table->string('shipping_method')->nullable();
+            $table->decimal('shipping_cost', 5, 2)->nullable();
             $table->timestamps();
         });
     }
@@ -36,6 +37,6 @@ class CreateShippingAddressesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shipping_addresses');
+        Schema::dropIfExists('shipping_informations');
     }
-}
+};

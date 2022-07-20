@@ -15,7 +15,7 @@ class Cart extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'created_at', 'updated_at'
+        'user_id', 'expired_at'
     ];
 
     protected $keyType = 'string';
@@ -39,5 +39,10 @@ class Cart extends Model
     public function cartItems(): HasMany
     {
         return $this->hasMany(CartItem::class);
+    }
+
+    public function shipping()
+    {
+        return $this->morphOne(ShippingInformation::class, 'shippingable');
     }
 }

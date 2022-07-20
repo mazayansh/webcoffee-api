@@ -10,7 +10,8 @@ use App\Interfaces\{
     TypeRepositoryInterface,
     ProductRepositoryInterface,
     CartRepositoryInterface,
-    CartItemRepositoryInterface
+    CartItemRepositoryInterface,
+    ShippingInformationRepositoryInterface
 };
 use App\Repositories\{
     UserRepository,
@@ -19,7 +20,8 @@ use App\Repositories\{
     TypeRepository,
     ProductRepository,
     CartRepository,
-    CartItemRepository
+    CartItemRepository,
+    ShippingInformationRepository
 };
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -38,6 +40,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
         $this->app->bind(CartRepositoryInterface::class, CartRepository::class);
         $this->app->bind(CartItemRepositoryInterface::class, CartItemRepository::class);
+        $this->app->bind(ShippingInformationRepositoryInterface::class, ShippingInformationRepository::class);
     }
 
     /**

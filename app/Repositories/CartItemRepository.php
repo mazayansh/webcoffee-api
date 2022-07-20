@@ -14,6 +14,11 @@ class CartItemRepository implements CartItemRepositoryInterface
             ])->get();
     }
 
+    public function checkIfCartHaveItems(string $cartId): bool
+    {
+        return CartItem::where('cart_id', $cartId)->exists();
+    }
+
     public function save(array $cartItemDetails)
     {
         return CartItem::create($cartItemDetails);

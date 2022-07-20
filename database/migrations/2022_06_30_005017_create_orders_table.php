@@ -17,14 +17,10 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customers');
-            $table->unsignedInteger('shipping_address_id');
-            $table->foreign('shipping_address_id')->references('id')->on('shipping_addresses');
             $table->unsignedTinyInteger('payment_type');
             $table->date('date');
             $table->unsignedTinyInteger('status')->default(1);
             $table->decimal('total_price', 10, 2);
-            $table->unsignedTinyInteger('shipping_method');
-            $table->decimal('shipping_cost', 5, 2);
             $table->timestamps();
         });
     }

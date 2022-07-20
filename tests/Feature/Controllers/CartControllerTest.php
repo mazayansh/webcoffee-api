@@ -75,7 +75,7 @@ class CartControllerTest extends TestCase
     {
         $response = $this->postJson('/api/v1/cart');
 
-        $response->assertStatus(200)->assertCookieNotExpired('KOPISLUR-CART-ID');
+        $response->assertStatus(200)->assertCookieNotExpired(config('constants.cookie_name.cart'));
     }
 
     public function test_get_cart_items_by_cart_id_cookie_ref_success()
@@ -84,7 +84,7 @@ class CartControllerTest extends TestCase
 
         $response = $this->disableCookieEncryption()->withHeaders([
                             'accept' => 'application/json'
-                        ])->withCookie('KOPISLUR-CART-ID', $cartId)
+                        ])->withCookie(config('constants.cookie_name.cart'), $cartId)
                         ->get('/api/v1/cart');
 
         $response->assertStatus(200)
@@ -106,25 +106,97 @@ class CartControllerTest extends TestCase
         $response = $this->getJson('/api/v1/cart');
 
         $response->assertStatus(200)
-                ->assertCookieNotExpired('KOPISLUR-CART-ID')
+            ->assertJson(fn (AssertableJson $json) =>
+                $json->has('data', 3, fn ($json) => 
+                    $json->hasAll([
+                            'id','cart_id','product_id','product_name','grind_size','weight','quantity','price'
+                        ])
+                        ->where('cart_id', $cartId)
+                )
+            );
+    }
+
+    public function test_get_cart_items_by_cart_id_new_cookie_ref_success()
+    {
+        $cartId = $this->getIdNewCart();
+
+        $response = $this->getJson('/api/v1/cart');
+
+        $response->assertStatus(200)
+                ->assertCookieNotExpired(config('constants.cookie_name.cart'))
                 ->assertJson(fn (AssertableJson $json) =>
-                    $json->has('data', 3, fn ($json) => 
-                        $json->hasAll([
-                                'id','cart_id','product_id','product_name','grind_size','weight','quantity','price'
-                            ])
-                            ->where('cart_id', $cartId)
-                    )
+                    $json->has('data', 0)
                 );
     }
 
-    public function test_get_cart_items_by_cart_id_no_cookie_ref_success()
+    public function test_cart_checkout_validation_fail()
     {
-        $response = $this->get('/api/v1/cart');
+        $response = $this->postJson('/api/v1/cart/checkout');
 
-        $response->assertStatus(200)
-                ->assertCookieNotExpired('KOPISLUR-CART-ID')
+        $response->assertStatus(422)
+                ->assertCookieNotExpired(config('constants.cookie_name.cart'))
                 ->assertJson(fn (AssertableJson $json) =>
-                    $json->has('data', 0)
+                    $json->hasAll(['message','errors'])
+                );
+    }
+
+    public function test_cart_checkout_empty()
+    {
+        $response = $this->postJson('/api/v1/cart/checkout', [
+                        'email' => 'imam@example.com',
+                        'first_name' => 'Imam',
+                        'last_name' => 'Setiawan',
+                        'phone' => '013412',
+                        'address' => 'Wungusari RT 16, Tegaldowo',
+                        'city' => 'Sragen',
+                        'state' => 'Jawa Tengah',
+                        'postcode' => '57274'
+                    ]);
+
+        $response->assertStatus(400)
+                ->assertCookieNotExpired(config('constants.cookie_name.cart'))
+                ->assertJson([
+                    'message' =>'Your cart is empty. Please add our special coffee product to your cart first.'
+                ]);
+    }
+
+    public function test_cart_checkout_success()
+    {
+        $cartId = $this->getIdNewCart();
+
+        $response = $this->disableCookieEncryption()
+                        ->withHeaders([
+                            'accept' => 'application/json'
+                        ])->withCookie(
+                            config('constants.cookie_name.cart'), 
+                            $cartId
+                        )->post('/api/v1/cart/checkout', [
+                            'email' => 'imam@example.com',
+                            'first_name' => 'Imam',
+                            'last_name' => 'Setiawan',
+                            'phone' => '013412',
+                            'address' => 'Wungusari RT 16, Tegaldowo',
+                            'city' => 'Sragen',
+                            'state' => 'Jawa Tengah',
+                            'postcode' => '57274'
+                        ]);
+
+        $response->assertStatus(201)
+                ->assertJson(fn (AssertableJson $json) => 
+                    $json->has('shipping_address', fn ($json) =>
+                        $json->where('shippingable_id', $cartId)
+                            ->where('shippingable_type', 'App\Models\Cart')
+                            ->where('email', 'imam@example.com')
+                            ->where('first_name', 'Imam')
+                            ->where('last_name', 'Setiawan')
+                            ->where('phone', '013412')
+                            ->where('address', 'Wungusari RT 16, Tegaldowo')
+                            ->where('city', 'Sragen')
+                            ->where('state', 'Jawa Tengah')
+                            ->where('postcode', '57274')
+                            ->etc()
+                        )
+                        ->etc()
                 );
     }
 }

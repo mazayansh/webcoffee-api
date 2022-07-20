@@ -21,9 +21,9 @@ class Order extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function shippingAddress(): HasOne
+    public function shipping()
     {
-        return $this->hasOne(ShippingAddress::class);
+        return $this->morphOne(ShippingInformation::class, 'shippingable');
     }
 
     public function payment(): HasOne
