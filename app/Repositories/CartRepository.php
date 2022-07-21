@@ -11,4 +11,15 @@ class CartRepository implements CartRepositoryInterface
     {
         return Cart::create($cartDetails);
     }
+
+    public function getSumCartItemsWeight(string $cartId)
+    {
+        return Cart::find($cartId)
+                    ->load('cartItems.productVariant')
+                    ->cartItems->reduce(
+                        function ($carry, $item) {
+                            return $carry + $item->productVariant->weight;
+                        }, 0
+                    );
+    }
 }

@@ -29,8 +29,9 @@ class SaveShippingAddressRequest extends FormRequest
             'last_name' => 'nullable|string',
             'phone' => 'nullable|string',
             'address' => 'required|string',
-            'city' => 'required|string',
-            'state' => 'required|string',
+            'city' => 'nullable|string',
+            'city_code' => 'required|string',
+            'state' => 'nullable|string',
             'postcode' => 'required|string',
         ];
     }

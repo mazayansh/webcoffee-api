@@ -24,6 +24,20 @@ class ShippingInformationRepository implements ShippingInformationRepositoryInte
 
     public function getByShippingableId(string $shippingableId)
     {
-        return ShippingInformation::findOrFail($shippingableId);
+        return ShippingInformation::where('shippingable_id', $shippingableId)->first();
+    }
+
+    public function updateByShippingableId(
+                        string $shippingableId, 
+                        array $shippingInfoDetails
+    )
+    {
+        $shippingInfo = ShippingInformation::where(
+                                        'shippingable_id', 
+                                        $shippingableId
+                                    )->first();
+        $shippingInfo->update($shippingInfoDetails);
+
+        return $shippingInfo->fresh();
     }
 }

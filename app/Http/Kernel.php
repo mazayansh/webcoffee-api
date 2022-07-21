@@ -64,6 +64,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'cart_cookie.exists' => \App\Http\Middleware\ShouldAttachCartCookie::class
+        'cart_cookie.exists' => \App\Http\Middleware\ShouldAttachCartCookie::class,
+        'cart.not_empty' => \App\Http\Middleware\CartMustNotEmpty::class
     ];
 }

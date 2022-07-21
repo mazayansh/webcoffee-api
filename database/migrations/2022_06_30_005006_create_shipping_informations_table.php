@@ -21,11 +21,12 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone')->nullable();
             $table->text('address');
-            $table->string('state');
-            $table->string('city');
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
+            $table->string('city_code');
             $table->string('postcode');
             $table->string('shipping_method')->nullable();
-            $table->decimal('shipping_cost', 5, 2)->nullable();
+            $table->decimal('shipping_cost', 10, 2)->nullable();
             $table->timestamps();
         });
     }

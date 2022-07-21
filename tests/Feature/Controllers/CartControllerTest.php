@@ -16,7 +16,8 @@ use App\Models\{
     Cart,
     CartItem,
     Customer,
-    User
+    User,
+    ShippingInformation
 };
 use App\Repositories\UserRepository;
 use App\Repositories\CustomerRepository;
@@ -69,13 +70,6 @@ class CartControllerTest extends TestCase
             'email' => 'user@example.com',
             'password' => '12345678'
         ]);
-    }
-
-    public function test_create_new_cart_success()
-    {
-        $response = $this->postJson('/api/v1/cart');
-
-        $response->assertStatus(200)->assertCookieNotExpired(config('constants.cookie_name.cart'));
     }
 
     public function test_get_cart_items_by_cart_id_cookie_ref_success()
@@ -131,10 +125,17 @@ class CartControllerTest extends TestCase
 
     public function test_cart_checkout_validation_fail()
     {
-        $response = $this->postJson('/api/v1/cart/checkout');
+        $cartId = $this->getIdNewCart();
+
+        $response = $this->disableCookieEncryption()
+                        ->withHeaders([
+                            'accept' => 'application/json'
+                        ])->withCookie(
+                            config('constants.cookie_name.cart'), 
+                            $cartId
+                        )->post('/api/v1/cart/checkout');
 
         $response->assertStatus(422)
-                ->assertCookieNotExpired(config('constants.cookie_name.cart'))
                 ->assertJson(fn (AssertableJson $json) =>
                     $json->hasAll(['message','errors'])
                 );
@@ -149,6 +150,7 @@ class CartControllerTest extends TestCase
                         'phone' => '013412',
                         'address' => 'Wungusari RT 16, Tegaldowo',
                         'city' => 'Sragen',
+                        'city_code' => '427',
                         'state' => 'Jawa Tengah',
                         'postcode' => '57274'
                     ]);
@@ -177,6 +179,7 @@ class CartControllerTest extends TestCase
                             'phone' => '013412',
                             'address' => 'Wungusari RT 16, Tegaldowo',
                             'city' => 'Sragen',
+                            'city_code' => '427',
                             'state' => 'Jawa Tengah',
                             'postcode' => '57274'
                         ]);
@@ -194,6 +197,39 @@ class CartControllerTest extends TestCase
                             ->where('city', 'Sragen')
                             ->where('state', 'Jawa Tengah')
                             ->where('postcode', '57274')
+                            ->etc()
+                        )
+                        ->etc()
+                );
+    }
+
+    public function test_cart_add_shipping_success()
+    {
+        $cartId = $this->getIdNewCart();
+        ShippingInformation::factory()->create([
+            'shippingable_id' => $cartId,
+            'city_code' => '151'
+        ]);
+
+        $response = $this->disableCookieEncryption()
+                        ->withHeaders([
+                            'accept' => 'application/json',
+                            'key' => env('RAJAONGKIR_API_KEY')
+                        ])->withCookie(
+                            config('constants.cookie_name.cart'), 
+                            $cartId
+                        )->post('/api/v1/cart/shipping', [
+                            'shipping_method' => 'REG',
+                        ]);
+        
+        $response->assertStatus(200)
+                ->assertJson(fn (AssertableJson $json) => 
+                    $json->has('shipping_info', fn ($json) =>
+                        $json->where('shippingable_id', $cartId)
+                            ->where('shippingable_type', 'App\Models\Cart')
+                            ->where('city_code', '151')
+                            ->where('shipping_method', 'REG')
+                            ->has('shipping_cost')
                             ->etc()
                         )
                         ->etc()

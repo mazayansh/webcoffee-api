@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Cart;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SaveShippingAddressRequest;
+use App\Http\Requests\{
+    SaveShippingAddressRequest,
+    SaveShippingMethodRequest
+};
 use App\Interfaces\{
     CartServiceInterface,
     CartItemServiceInterface,
@@ -14,6 +17,8 @@ use App\Helpers\CookieHelper;
 
 class CartController extends Controller
 {
+    private string $cartId;
+
     public function __construct(
         public CartServiceInterface $cartService, 
         public CartItemServiceInterface $cartItemService,
@@ -23,18 +28,9 @@ class CartController extends Controller
         
     }
 
-    public function store()
-    {
-        return response()->json([], 200)->withCookie(
-                $this->cartService->generateCartCookie()
-            );
-    }
-
     public function show()
     {
-        $cartId = request()->cookie(config('constants.cookie_name.cart')) 
-                    ?? 
-                    CookieHelper::getCookieValueFromQueue(config('constants.cookie_name.cart'));
+        $cartId = $this->getCartId();
         $cartItems = $this->cartItemService->getListFromCart($cartId);
 
         return response()
@@ -45,40 +41,43 @@ class CartController extends Controller
 
     public function checkout(SaveShippingAddressRequest $request)
     {
-        $cartId = request()->cookie(config('constants.cookie_name.cart')) 
-                    ?? 
-                    CookieHelper::getCookieValueFromQueue(config('constants.cookie_name.cart'));
-
-        $isCartNotEmpty = $this->cartService->isCartNotEmpty($cartId);
-
-        if ($isCartNotEmpty) {
-            $shippingable = [
+        $cartId = $this->getCartId();
+        $shippingable = [
                 'id' => $cartId,
                 'type' => 'cart'
             ];
 
-            $shippingInfo = $this->shippingInformationService
+        $shippingInfo = $this->shippingInformationService
                                 ->create(
                                     $shippingable,
                                     $request->validated()
                                 );
-            
-            $response = [
-                'content' => [
-                    'message' => 'Shipping address sucessfully saved',
-                    'shipping_address' => $shippingInfo
-                ],
-                'code' => 201
-            ];
-        } else {
-            $response = [
-                'content' => [
-                    'message' => 'Your cart is empty. Please add our special coffee product to your cart first.',
-                ],
-                'code' => 400
-            ];
-        }
 
-        return response()->json($response['content'], $response['code']);
+        return response()->json([
+                'message' => 'Shipping address sucessfully saved',
+                'shipping_address' => $shippingInfo
+            ], 201);
+    }
+
+    public function shipping(SaveShippingMethodRequest $request)
+    {
+        $cartId = $this->getCartId();
+        $shippingInfo = $this->shippingInformationService
+                                ->addShippingMethod(
+                                    $cartId,
+                                    $request->validated()
+                                );
+
+        return response()->json([
+                'message' => 'Shipping method sucessfully saved',
+                'shipping_info' => $shippingInfo
+            ], 200);
+    }
+
+    private function getCartId(): string
+    {
+        $cookieName = config('constants.cookie_name.cart');
+        return request()->cookie($cookieName) ?? 
+                CookieHelper::getCookieValueFromQueue($cookieName);
     }
 }

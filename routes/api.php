@@ -41,14 +41,16 @@ Route::prefix('v1')->group(function () {
     Route::get('products', [ProductController::class, 'index']);
     Route::get('products/{id}', [ProductController::class, 'show']);
     // Cart
-    Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
-    Route::middleware(['cart_cookie.exists'])->group(function () {
-        Route::prefix('/cart')->group(function () {
+    Route::prefix('/cart')->group(function () {
+        Route::put('/cart-items/{cart_item_id}', [CartItemController::class, 'update']);
+        Route::delete('/cart-items/{cart_item_id}', [CartItemController::class, 'destroy']);
+        Route::middleware(['cart_cookie.exists'])->group(function () {
             Route::get('/', [CartController::class, 'show']);
-            Route::post('/checkout', [CartController::class, 'checkout']);
             Route::post('/cart-items', [CartItemController::class, 'store']);
-            Route::put('/cart-items/{cart_item_id}', [CartItemController::class, 'update']);
-            Route::delete('/cart-items/{cart_item_id}', [CartItemController::class, 'destroy']);
+            Route::middleware(['cart.not_empty'])->group(function () {
+                Route::post('/checkout', [CartController::class, 'checkout']);
+                Route::post('/shipping', [CartController::class, 'shipping']);
+            });
         });
     });
 });

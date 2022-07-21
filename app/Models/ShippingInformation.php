@@ -19,6 +19,7 @@ class ShippingInformation extends Model
         'phone',
         'address',
         'city',
+        'city_code',
         'state',
         'postcode',
         'shipping_method',
