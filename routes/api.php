@@ -56,7 +56,7 @@ Route::prefix('v1')->group(function () {
             });
         });
     });
-    Route::prefix('/orders')->group(function () {
+    Route::prefix('/orders')->middleware(['cart_cookie.exists','cart.not_empty'])->group(function () {
         Route::post('/', [OrderController::class, 'store']);
     });
 });
