@@ -15,13 +15,15 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('order_id');
+            $table->uuid('order_id');
             $table->foreign('order_id')->references('id')->on('orders');
-            $table->string('status');
-            $table->decimal('gross_amount', 10, 2);
-            $table->string('payment_code');
+            $table->string('transaction_id');
+            $table->string('transaction_time');
             $table->string('payment_type');
-            $table->string('pdf_url');
+            $table->string('va_number')->nullable();
+            $table->string('bill_key')->nullable();
+            $table->string('biller_key')->nullable();
+            $table->string('pdf_url')->nullable();
             $table->timestamps();
         });
     }

@@ -6,6 +6,12 @@ use Illuminate\Support\Facades\Cookie;
 
 class CookieHelper
 {
+    public static function getCookieValue(string $name)
+    {
+        return request()->cookie($name) ?? 
+                CookieHelper::getCookieValueFromQueue($name);
+    }
+
     public static function getCookieValueFromQueue(string $name)
     {
         $queuedCookies = Cookie::getQueuedCookies();

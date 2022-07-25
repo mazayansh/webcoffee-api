@@ -17,14 +17,14 @@ class CustomerFactory extends Factory
     public function definition()
     {
         return [
-            'first_name' => fake()->firstName,
-            'last_name' => fake()->lastName,
-            'email' => fake()->safeEmail,
-            'phone' => fake()->phoneNumber,
-            'address_1' => fake()->address,
-            'city' => fake()->city,
-            'state' => fake()->state,
-            'postcode' => fake()->postcode,
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'email' => fake()->safeEmail(),
+            'phone' => fake()->phoneNumber(),
+            'address_1' => fake()->address(),
+            'city' => fake()->city(),
+            'state' => fake()->state(),
+            'postcode' => fake()->postcode(),
             'created_at' => now(),
             'updated_at' => now()
         ];

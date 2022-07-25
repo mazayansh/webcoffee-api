@@ -36,18 +36,18 @@ class CartService implements CartServiceInterface
         if (auth()->user()) {
             if ($cartId = optional(auth()->user()->cart)->id) {
                 return cookie(
-                        config('constants.cookie_name.cart'), 
-                        $cartId, 
-                        60*24*14
-                    );
+                    config('constants.cookie_name.cart'), 
+                    $cartId, 
+                    60*24*14
+                );
             }
         }
 
         return cookie(
-                config('constants.cookie_name.cart'), 
-                $this->create()->id, 
-                60*24*14
-            );
+            config('constants.cookie_name.cart'), 
+            $this->create()->id, 
+            60*24*14
+        );
     }
     
     public function isCartNotEmpty(string $cartId): bool

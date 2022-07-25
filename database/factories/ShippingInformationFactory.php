@@ -16,20 +16,24 @@ class ShippingInformationFactory extends Factory
      */
     public function definition()
     {
-        $cityCodes = ['151','22','398','445','444','255'];
+        $cities = ['Jakarta Pusat', 'Bandung', 'Semarang', 'Solo', 'Surabaya', 'Malang'];
+        $cityCodes = ['152','22','398','445','444','255'];
+        $randIndex = array_rand($cities);
 
         return [
             'shippingable_type' => 'App\Models\Cart',
-            'shippingable_id' => fake()->uuid,
-            'first_name' => fake()->firstName,
-            'last_name' => fake()->lastName,
-            'email' => fake()->safeEmail,
-            'phone' => fake()->phoneNumber,
-            'address' => fake()->address,
-            'city' => fake()->city,
-            'city_code' => $cityCodes[array_rand($cityCodes)],
-            'state' => fake()->state,
-            'postcode' => fake()->postcode,
+            'shippingable_id' => fake()->uuid(),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'email' => fake()->safeEmail(),
+            'phone' => fake()->phoneNumber(),
+            'address' => fake()->address(),
+            'city' => $cities[$randIndex],
+            'city_code' => $cityCodes[$randIndex],
+            'state' => fake()->state(),
+            'postcode' => fake()->postcode(),
+            'shipping_method' => 'REG',
+            'shipping_cost' => 24000.00,
             'created_at' => now(),
             'updated_at' => now()
         ];

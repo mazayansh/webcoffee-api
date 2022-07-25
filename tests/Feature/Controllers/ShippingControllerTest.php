@@ -23,7 +23,7 @@ use App\Repositories\UserRepository;
 use App\Repositories\CustomerRepository;
 use App\Services\UserService;
 
-class CartControllerTest extends TestCase
+class ShippingControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
@@ -72,54 +72,36 @@ class CartControllerTest extends TestCase
         ]);
     }
 
-    public function test_get_cart_items_by_cart_id_cookie_ref_success()
+    public function test_cart_add_shipping_success()
     {
         $cartId = $this->getIdNewCart();
+        ShippingInformation::factory()->create([
+            'shippingable_id' => $cartId,
+            'city_code' => '151'
+        ]);
 
-        $response = $this->disableCookieEncryption()->withHeaders([
-                            'accept' => 'application/json'
-                        ])->withCookie(config('constants.cookie_name.cart'), $cartId)
-                        ->get('/api/v1/cart');
-
+        $response = $this->disableCookieEncryption()
+                        ->withHeaders([
+                            'accept' => 'application/json',
+                            'key' => env('RAJAONGKIR_API_KEY')
+                        ])->withCookie(
+                            config('constants.cookie_name.cart'), 
+                            $cartId
+                        )->post('/api/v1/cart/shipping', [
+                            'shipping_method' => 'REG',
+                        ]);
+        
         $response->assertStatus(200)
-            ->assertJson(fn (AssertableJson $json) =>
-                $json->has('data', 3, fn ($json) => 
-                    $json->hasAll([
-                            'id','cart_id','product_id','product_name','grind_size','weight','quantity','price'
-                        ])
-                        ->where('cart_id', $cartId)
-                )
-            );
-    }
-
-    public function test_get_cart_items_by_cart_id_user_ref_success()
-    {
-        $this->generateAccessToken();
-        $cartId = $this->getIdNewCart();
-
-        $response = $this->getJson('/api/v1/cart');
-
-        $response->assertStatus(200)
-            ->assertJson(fn (AssertableJson $json) =>
-                $json->has('data', 3, fn ($json) => 
-                    $json->hasAll([
-                            'id','cart_id','product_id','product_name','grind_size','weight','quantity','price'
-                        ])
-                        ->where('cart_id', $cartId)
-                )
-            );
-    }
-
-    public function test_get_cart_items_by_cart_id_new_cookie_ref_success()
-    {
-        $cartId = $this->getIdNewCart();
-
-        $response = $this->getJson('/api/v1/cart');
-
-        $response->assertStatus(200)
-                ->assertCookieNotExpired(config('constants.cookie_name.cart'))
-                ->assertJson(fn (AssertableJson $json) =>
-                    $json->has('data', 0)
+                ->assertJson(fn (AssertableJson $json) => 
+                    $json->has('shipping_info', fn ($json) =>
+                        $json->where('shippingable_id', $cartId)
+                            ->where('shippingable_type', 'App\Models\Cart')
+                            ->where('city_code', '151')
+                            ->where('shipping_method', 'REG')
+                            ->has('shipping_cost')
+                            ->etc()
+                        )
+                        ->etc()
                 );
     }
 }

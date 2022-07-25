@@ -10,7 +10,10 @@ use App\Interfaces\{
     ProductServiceInterface,
     CartServiceInterface,
     CartItemServiceInterface,
-    ShippingInformationServiceInterface
+    ShippingInformationServiceInterface,
+    BillingAddressServiceInterface,
+    OrderServiceInterface,
+    PaymentServiceInterface
 };
 use App\Services\{
     UserService,
@@ -19,7 +22,10 @@ use App\Services\{
     ProductService,
     CartService,
     CartItemService,
-    ShippingInformationService
+    ShippingInformationService,
+    BillingAddressService,
+    OrderService,
+    PaymentService
 };
 
 class ServiceServiceProvider extends ServiceProvider
@@ -38,6 +44,9 @@ class ServiceServiceProvider extends ServiceProvider
         $this->app->bind(CartServiceInterface::class, CartService::class);
         $this->app->bind(CartItemServiceInterface::class, CartItemService::class);
         $this->app->bind(ShippingInformationServiceInterface::class, ShippingInformationService::class);
+        $this->app->bind(BillingAddressServiceInterface::class, BillingAddressService::class);
+        $this->app->bind(OrderServiceInterface::class, OrderService::class);
+        $this->app->bind(PaymentServiceInterface::class, PaymentService::class);
     }
 
     /**

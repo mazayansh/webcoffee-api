@@ -7,23 +7,42 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\Customer;
-use App\Models\ShippingAddress;
-use App\Models\Payment;
-use App\Models\OrderItem;
+use Illuminate\Support\Str;
 
 class Order extends Model
 {
     use HasFactory;
 
-    public function customer(): BelongsTo
+    protected $fillable = [
+        'user_id', 'payment_method', 'status', 'total_price'
+    ];
+
+    protected $keyType = 'string';
+
+    public $incrementing = false;
+
+    protected static function boot()
     {
-        return $this->belongsTo(Customer::class);
+        parent::boot();
+
+        static::creating(function (Model $model) {
+            $model->setAttribute($model->getKeyName(), Str::uuid()->toString());
+        });
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function shipping()
     {
         return $this->morphOne(ShippingInformation::class, 'shippingable');
+    }
+
+    public function billingAddress()
+    {
+        return $this->hasOne(BillingAddress::class);
     }
 
     public function payment(): HasOne

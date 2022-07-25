@@ -6,7 +6,6 @@ use App\Interfaces\ShippingInformationServiceInterface;
 use App\Interfaces\ShippingInformationRepositoryInterface;
 use App\Interfaces\CartRepositoryInterface;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class ShippingInformationService implements ShippingInformationServiceInterface
 {
@@ -45,7 +44,7 @@ class ShippingInformationService implements ShippingInformationServiceInterface
                     );
     }
 
-    private function getShippingCost(
+    public function getShippingCost(
                         string $shippingableId, 
                         string $shippingMethod)
     {
@@ -62,7 +61,7 @@ class ShippingInformationService implements ShippingInformationServiceInterface
             'courier' => config('constants.shipping.courier')
         ]);
 
-        $shippingCost = 10000;
+        $shippingCost = 0;
         
         if ($results = json_decode($response)->rajaongkir->results) {
             for ($i=0;$i<count($results);$i++) {
@@ -78,5 +77,17 @@ class ShippingInformationService implements ShippingInformationServiceInterface
         }
 
         return $shippingCost;
+    }
+
+    public function updateShippingInfo(string $shippingableId, array $shippingInfoDetails)
+    {
+        $shippingInfo = $this->shippingInformationRepository
+                            ->updateByShippingableId($shippingableId, $shippingInfoDetails);
+
+        if (! $shippingInfo) {
+            throw new \Exception("Update shipping information failed");
+        }
+
+        return $shippingInfo;
     }
 }

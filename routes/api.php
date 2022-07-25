@@ -8,7 +8,10 @@ use App\Http\Controllers\{
     Type\TypeController,
     Product\ProductController,
     Cart\CartController,
-    Cart\CartItemController
+    Cart\CartItemController,
+    Cart\CheckoutController,
+    Cart\ShippingController,
+    Order\OrderController
 };
 
 /*
@@ -48,9 +51,12 @@ Route::prefix('v1')->group(function () {
             Route::get('/', [CartController::class, 'show']);
             Route::post('/cart-items', [CartItemController::class, 'store']);
             Route::middleware(['cart.not_empty'])->group(function () {
-                Route::post('/checkout', [CartController::class, 'checkout']);
-                Route::post('/shipping', [CartController::class, 'shipping']);
+                Route::post('/checkout', CheckoutController::class);
+                Route::post('/shipping', ShippingController::class);
             });
         });
+    });
+    Route::prefix('/orders')->group(function () {
+        Route::post('/', [OrderController::class, 'store']);
     });
 });

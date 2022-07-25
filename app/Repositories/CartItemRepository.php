@@ -7,18 +7,6 @@ use App\Models\CartItem;
 
 class CartItemRepository implements CartItemRepositoryInterface
 {
-    public function getAllByCartId(string $cartId)
-    {
-        return CartItem::where('cart_id', $cartId)->with([
-            'productVariant','productVariant.product'
-            ])->get();
-    }
-
-    public function checkIfCartHaveItems(string $cartId): bool
-    {
-        return CartItem::where('cart_id', $cartId)->exists();
-    }
-
     public function save(array $cartItemDetails)
     {
         return CartItem::create($cartItemDetails);
@@ -38,6 +26,37 @@ class CartItemRepository implements CartItemRepositoryInterface
         try {
             return CartItem::findOrFail($cartItemId)->delete();
         } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
+    public function getAllByCartId(string $cartId)
+    {
+        return CartItem::where('cart_id', $cartId)->with([
+            'productVariant','productVariant.product'
+            ])->get();
+    }
+
+    public function checkIfCartHaveItems(string $cartId): bool
+    {
+        return CartItem::where('cart_id', $cartId)->exists();
+    }
+
+    public function moveToOrderItemsTable($cartItems, $order): bool
+    {
+        try {
+            $cartItems->each(function ($cartItem) use ($order) {
+                $orderItem = $cartItem->replicate(['cart_id']);
+                $orderItem->order_id = $order->id;
+                $orderItem->subtotal_price = $cartItem->productVariant->price * $cartItem->quantity;
+                $orderItem->setTable('order_items');
+                $orderItem->save();
+
+                $cartItem->delete();
+            });
+
+            return true;
+        } catch (\Exception $e) {
             return false;
         }
     }

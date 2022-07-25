@@ -11,4 +11,8 @@ interface ShippingInformationServiceInterface
     public function addShippingMethod(
                         string $shippingableId, 
                         array $shippingMethodDetails);
+                        
+    public function getShippingCost(string $shippingableId, string $shippingMethod);
+    
+    public function updateShippingInfo(string $shippingableId, array $shippingInfoDetails);
 }

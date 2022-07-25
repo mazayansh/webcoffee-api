@@ -13,6 +13,8 @@ class ShippingInformation extends Model
     protected $table = 'shipping_informations';
 
     protected $fillable = [
+        'shippingable_type',
+        'shippingable_id',
         'email',
         'first_name',
         'last_name',
