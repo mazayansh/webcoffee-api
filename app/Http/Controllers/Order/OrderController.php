@@ -28,15 +28,18 @@ class OrderController extends Controller
     {
         try {
             $cartId = CookieHelper::getCookieValue(config('constants.cookie_name.cart'));
-            $orderDetails = $request->validated();
-            $order = $this->orderService->createOrder($cartId, $orderDetails);
+            $billingDetails = $request->validated();
+            $order = $this->orderService->createOrder($cartId, $billingDetails);
 
-            $this->shippingInformationService->updateShippingInfo($cartId, [
+            $shippingInfo = $this->shippingInformationService->updateShippingInfo($cartId, [
                 'shippingable_type' => 'App\Models\Order',
                 'shippingable_id' => $order->id
             ]);
 
-            $billingAddressDetails = array_merge($orderDetails, ['order_id' => $order->id]);
+            if ($billingDetails['same_as_shipping_address']) {
+                $billingDetails = $shippingInfo->toArray();
+            }
+            $billingAddressDetails = array_merge($billingDetails, ['order_id' => $order->id]);
             $billingAddress = $this->billingAddressService->createBillingAddress($billingAddressDetails);
 
             $paymentDetails = $this->paymentService->chargeBankTransfer($order);

@@ -6,42 +6,19 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Illuminate\Testing\Fluent\AssertableJson;
-use Database\Seeders\{
-    RoastSeeder,
-    TypeSeeder,
-    ProductSeeder,
-    ProductVariantSeeder
-};
-use App\Models\{
-    Cart,
-    CartItem,
-};
+use App\Traits\DemoDataTestTrait;
 
 class CartItemControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, DemoDataTestTrait;
 
     private $cartId;
 
     public function setUp(): void
     {
         parent::setUp();
-
-        $this->seed([
-            RoastSeeder::class,
-            TypeSeeder::class,
-            ProductSeeder::class,
-            ProductVariantSeeder::class
-        ]);
-
-        $cart = Cart::factory()->create([
-            'user_id' => optional(auth()->user())->id ?? null
-        ]);
-        CartItem::factory()->count(3)->create([
-            'cart_id'  => $cart->id
-        ]);
-
-        $this->cartId = $cart->id;
+        
+        $this->cartId = $this->getIdNewCart();
     }
 
     public function test_add_cart_item_success()

@@ -59,6 +59,8 @@ class PaymentService implements PaymentServiceInterface
                     'transaction_id' => $chargeResponse->transaction_id,
                     'transaction_time' => $chargeResponse->transaction_time,
                     'payment_type' => $chargeResponse->payment_type,
+                    'bank' => $order->payment_method,
+                    'gross_amount' => $chargeResponse->gross_amount,
                     'message' => $chargeResponse->status_message,
                     'va_number' => $chargeResponse->va_numbers[0]->va_number,
                     'fraud_status' => $chargeResponse->fraud_status
@@ -82,9 +84,11 @@ class PaymentService implements PaymentServiceInterface
                     'transaction_id' => $chargeResponse->transaction_id,
                     'transaction_time' => $chargeResponse->transaction_time,
                     'payment_type' => $chargeResponse->payment_type,
+                    'bank' => $order->payment_method,
+                    'gross_amount' => $chargeResponse->gross_amount,
                     'message' => $chargeResponse->status_message,
                     'bill_key' => $chargeResponse->bill_key,
-                    'biller_key' => $chargeResponse->biller_code,
+                    'biller_code' => $chargeResponse->biller_code,
                     'fraud_status' => $chargeResponse->fraud_status
                 ];
 
@@ -102,6 +106,8 @@ class PaymentService implements PaymentServiceInterface
                     'transaction_id' => $chargeResponse->transaction_id,
                     'transaction_time' => $chargeResponse->transaction_time,
                     'payment_type' => $chargeResponse->payment_type,
+                    'bank' => $order->payment_method,
+                    'gross_amount' => $chargeResponse->gross_amount,
                     'message' => $chargeResponse->status_message,
                     'va_number' => $chargeResponse->permata_va_number,
                     'fraud_status' => $chargeResponse->fraud_status

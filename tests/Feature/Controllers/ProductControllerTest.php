@@ -12,7 +12,6 @@ use Database\Seeders\{
     ProductSeeder, 
     ProductVariantSeeder
 };
-use Illuminate\Support\Facades\Log;
 
 class ProductControllerTest extends TestCase
 {

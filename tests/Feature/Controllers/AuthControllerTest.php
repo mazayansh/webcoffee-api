@@ -6,41 +6,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Illuminate\Testing\Fluent\AssertableJson;
-use App\Repositories\UserRepository;
-use App\Repositories\CustomerRepository;
-use App\Services\UserService;
-use App\Models\User;
-use App\Models\Customer;
+use App\Traits\DemoDataTestTrait;
 
 class AuthControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
-    private function insertRecord(): void
-    {
-        Customer::factory()->create([
-            'first_name' => 'User',
-            'last_name' => 'Example',
-            'email' => 'user@example.com'
-        ]);
-
-        User::factory()->create([
-            'customer_id' => 1,
-            'email' => 'user@example.com',
-            'password' => '$2y$10$9wouA3lix1KLH.r1TMuBM.6thdEO7piwlzSuU2kF8pfDL1VvD77fO'//12345678,
-        ]);
-    }
-
-    private function generateAccessToken(): void
-    {
-        $this->insertRecord();
-
-        $userService = new UserService(new UserRepository, new CustomerRepository);
-        $loginResponse = $userService->login([
-            'email' => 'user@example.com',
-            'password' => '12345678'
-        ]);
-    }
+    use RefreshDatabase, DemoDataTestTrait;
 
     public function test_register_validation_failed()
     {
@@ -75,7 +45,7 @@ class AuthControllerTest extends TestCase
 
     public function test_login_validation_failed()
     {
-        $this->insertRecord();
+        $this->insertUserRecord();
 
         $response = $this->postJson('/api/v1/auth/login', [
             'email' => 'simam',
@@ -101,7 +71,7 @@ class AuthControllerTest extends TestCase
 
     public function test_login_wrong_credentials()
     {
-        $this->insertRecord();
+        $this->insertUserRecord();
 
         $response = $this->postJson('/api/v1/auth/login', [
             'email' => 'user@example.com',
@@ -115,7 +85,7 @@ class AuthControllerTest extends TestCase
 
     public function test_login_success()
     {
-        $this->insertRecord();
+        $this->insertUserRecord();
 
         $response = $this->postJson('/api/v1/auth/login', [
             'email' => 'user@example.com',
