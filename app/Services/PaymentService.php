@@ -36,8 +36,7 @@ class PaymentService implements PaymentServiceInterface
             'first_name' => $order->shipping->first_name,
             'last_name' => $order->shipping->last_name,
             'email' => $order->shipping->email,
-            'phone' => $order->shipping->phone,
-            'address' => $order->shipping->address
+            'phone' => $order->shipping->phone
         ];
 
         $paymentDetails = [];

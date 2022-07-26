@@ -14,6 +14,7 @@ class CartControllerTest extends TestCase
 
     public function test_get_cart_items_by_cart_id_cookie_ref_success()
     {
+        $this->basicSeeding();
         $cartId = $this->getIdNewCart();
 
         $response = $this->disableCookieEncryption()->withHeaders([
@@ -35,6 +36,7 @@ class CartControllerTest extends TestCase
     public function test_get_cart_items_by_cart_id_user_ref_success()
     {
         $this->generateAccessToken();
+        $this->basicSeeding();
         $cartId = $this->getIdNewCart();
 
         $response = $this->getJson('/api/v1/cart');
@@ -52,6 +54,7 @@ class CartControllerTest extends TestCase
 
     public function test_get_cart_items_by_cart_id_new_cookie_ref_success()
     {
+        $this->basicSeeding();
         $cartId = $this->getIdNewCart();
 
         $response = $this->getJson('/api/v1/cart');

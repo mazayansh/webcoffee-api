@@ -22,7 +22,7 @@ class CreatePaymentsTable extends Migration
             $table->string('payment_type');
             $table->string('va_number')->nullable();
             $table->string('bill_key')->nullable();
-            $table->string('biller_key')->nullable();
+            $table->string('biller_code')->nullable();
             $table->string('pdf_url')->nullable();
             $table->timestamps();
         });

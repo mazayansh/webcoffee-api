@@ -63,6 +63,17 @@ class OrderService implements OrderServiceInterface
         }
     }
 
+    public function updateOrder(string $orderId, array $orderDetails)
+    {
+        DB::beginTransaction();
+        try {
+            $this->orderRepository->update($orderId, $orderDetails);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+    }
+
     private function calculateTotalPrice($shippingCost, $cartItems)
     {
         $totalPrice = $shippingCost;

@@ -13,7 +13,11 @@ use App\Models\{
     CartItem,
     Customer,
     User,
-    ShippingInformation
+    ShippingInformation,
+    Order,
+    OrderItem,
+    BillingAddress,
+    Payment
 };
 use App\Repositories\UserRepository;
 use App\Repositories\CustomerRepository;
@@ -50,7 +54,7 @@ trait DemoDataTestTrait
         ]);
     }
 
-    private function getIdNewCart()
+    private function basicSeeding(): void
     {
         $this->seed([
             RoastSeeder::class,
@@ -58,7 +62,10 @@ trait DemoDataTestTrait
             ProductSeeder::class,
             ProductVariantSeeder::class
         ]);
+    }
 
+    private function getIdNewCart()
+    {
         $cart = Cart::factory()->create([
             'user_id' => optional(auth()->user())->id ?? null
         ]);
@@ -67,6 +74,30 @@ trait DemoDataTestTrait
         ]);
 
         return $cart->id;
+    }
+
+    private function getIdNewOrder()
+    {
+        $order = Order::factory()->create();
+
+        OrderItem::factory(rand(1,4))->create([
+            'order_id' => $order->id
+        ]);
+
+        ShippingInformation::factory()->create([
+            'shippingable_type' => 'App\Models\Order',
+            'shippingable_id'  => $order->id
+        ]);
+
+        BillingAddress::factory()->create([
+            'order_id' => $order->id
+        ]);
+
+        Payment::factory()->create([
+            'order_id' => $order->id
+        ]);
+
+        return $order->id;
     }
 
     private function createShippingInformation(array $shippingInfoDetails)

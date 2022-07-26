@@ -14,6 +14,7 @@ class CheckoutControllerTest extends TestCase
 
     public function test_cart_checkout_validation_fail()
     {
+        $this->basicSeeding();
         $cartId = $this->getIdNewCart();
 
         $response = $this->disableCookieEncryption()
@@ -53,6 +54,7 @@ class CheckoutControllerTest extends TestCase
 
     public function test_cart_checkout_success()
     {
+        $this->basicSeeding();
         $cartId = $this->getIdNewCart();
 
         $response = $this->disableCookieEncryption()

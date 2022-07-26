@@ -14,6 +14,7 @@ class OrderControllerTest extends TestCase
 
     public function test_create_order_validation_fail()
     {
+        $this->basicSeeding();
         $cartId = $this->getIdNewCart();
 
         $response = $this->disableCookieEncryption()->withHeaders([
@@ -35,6 +36,7 @@ class OrderControllerTest extends TestCase
      */
     public function test_create_order_success(array $formData, $expectedResponse)
     {
+        $this->basicSeeding();
         $cartId = $this->getIdNewCart();
         $this->createShippingInformation([
             'shippingable_id' => $cartId

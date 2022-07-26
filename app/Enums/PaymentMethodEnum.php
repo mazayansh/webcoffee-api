@@ -9,4 +9,9 @@ enum PaymentMethodEnum: string
     case BRI = 'bri';
     case MANDIRI = 'mandiri';
     case PERMATA = 'permata';
+
+    public static function random(): string
+    {
+        return self::cases()[array_rand(self::cases())]->value;
+    }
 }

@@ -18,6 +18,7 @@ class CartItemControllerTest extends TestCase
     {
         parent::setUp();
         
+        $this->basicSeeding();
         $this->cartId = $this->getIdNewCart();
     }
 

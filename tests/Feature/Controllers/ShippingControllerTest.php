@@ -15,6 +15,7 @@ class ShippingControllerTest extends TestCase
 
     public function test_cart_add_shipping_success()
     {
+        $this->basicSeeding();
         $cartId = $this->getIdNewCart();
         $this->createShippingInformation([
             'shippingable_id' => $cartId,

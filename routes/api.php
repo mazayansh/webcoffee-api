@@ -11,7 +11,8 @@ use App\Http\Controllers\{
     Cart\CartItemController,
     Cart\CheckoutController,
     Cart\ShippingController,
-    Order\OrderController
+    Order\OrderController,
+    Order\OrderPaymentController
 };
 
 /*
@@ -56,7 +57,8 @@ Route::prefix('v1')->group(function () {
             });
         });
     });
-    Route::prefix('/orders')->middleware(['cart_cookie.exists','cart.not_empty'])->group(function () {
-        Route::post('/', [OrderController::class, 'store']);
+    Route::prefix('/orders')->group(function () {
+        Route::post('/', [OrderController::class, 'store'])->middleware(['cart_cookie.exists','cart.not_empty']);
+        Route::post('/payment/notification/handling', [OrderPaymentController::class, 'handleNotification']);
     });
 });
