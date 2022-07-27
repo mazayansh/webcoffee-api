@@ -47,13 +47,26 @@ class Product extends Model
                     ->select(
                         'products.id', 
                         'products.name', 
+                        'products.slug',
                         'products.aftertaste', 
                         DB::raw('MIN(product_variants.price) AS price')
                     )
                     ->groupBy(
                         'products.id', 
                         'products.name', 
+                        'products.slug', 
                         'products.aftertaste');
+    }
+
+    public function scopeWithFeaturedImage($query)
+    {
+        return $query->leftJoin(
+                        'medias',
+                        'products.id','=','medias.product_id')
+                    ->where('medias.type', 'image')
+                    ->where('medias.is_featured', 1)
+                    ->addSelect('medias.path AS featured_image_url')
+                    ->groupBy('featured_image_url');
     }
 
     /*
@@ -74,7 +87,7 @@ class Product extends Model
                                     $sort_order = $val[0] == '+' ? 'asc' : 'desc';
                                     $sort_attr = substr($val, 1);
                                     
-                                    return $query->orderBy($sort_attr, $sort_order);
+                                    return $query->orderBy('products.'.$sort_attr, $sort_order);
                                 }
                             );
                         }

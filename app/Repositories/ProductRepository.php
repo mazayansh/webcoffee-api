@@ -10,6 +10,7 @@ class ProductRepository implements ProductRepositoryInterface
     public function getPaginate(array $query_params)
     {
         return Product::joinProductVariant()
+                    ->withFeaturedImage()
                     ->sortProduct($query_params['sort'] ?? null)
                     ->searchProduct($query_params['search'] ?? null)
                     ->filterProduct($query_params['filter'] ?? null)
@@ -18,6 +19,6 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function getById(int $id)
     {
-        return Product::findOrFail($id)->load(['roast','type','productVariants']);
+        return Product::findOrFail($id)->load(['roast','type','productVariants','medias']);
     }
 }

@@ -10,7 +10,8 @@ use Database\Seeders\{
     RoastSeeder,
     TypeSeeder,
     ProductSeeder, 
-    ProductVariantSeeder
+    ProductVariantSeeder,
+    MediaSeeder
 };
 
 class ProductControllerTest extends TestCase
@@ -25,7 +26,8 @@ class ProductControllerTest extends TestCase
             RoastSeeder::class,
             TypeSeeder::class,
             ProductSeeder::class,
-            ProductVariantSeeder::class
+            ProductVariantSeeder::class,
+            MediaSeeder::class
         ]);
     }
 
@@ -37,7 +39,7 @@ class ProductControllerTest extends TestCase
             ->assertJson(fn (AssertableJson $json) =>
                 $json->hasAll(['links','meta'])
                     ->has('data', 9, fn ($json) => 
-                        $json->hasAll(['id','name','aftertaste','price'])
+                        $json->hasAll(['id','name','slug','aftertaste','price','featured_image_url'])
                             ->where('id', 1)
                             ->where('name', 'BALI BLUE MOON SINGLE ORIGIN DARK ROAST COFFEE')
                             ->etc()
@@ -53,7 +55,7 @@ class ProductControllerTest extends TestCase
             ->assertJson(fn (AssertableJson $json) =>
                 $json->hasAll(['links','meta'])
                     ->has('data', 9, fn ($json) => 
-                        $json->hasAll(['id','name','aftertaste','price'])
+                        $json->hasAll(['id','name','slug','aftertaste','price','featured_image_url'])
                             ->where('id', 6)
                             ->where('name', 'JAMAICA BLUE MOUNTAIN SINGLE ORIGIN RESERVE COFFEE 100%')
                             ->etc()
@@ -69,7 +71,7 @@ class ProductControllerTest extends TestCase
             ->assertJson(fn (AssertableJson $json) =>
                 $json->hasAll(['links','meta'])
                     ->has('data', 1, fn ($json) => 
-                        $json->hasAll(['id','name','aftertaste','price'])
+                        $json->hasAll(['id','name','slug','aftertaste','price','featured_image_url'])
                             ->where('id', 9)
                             ->where('name', 'HAZELNUT COFFEE')
                             ->etc()
@@ -85,7 +87,7 @@ class ProductControllerTest extends TestCase
             ->assertJson(fn (AssertableJson $json) =>
                 $json->hasAll(['links','meta'])
                     ->has('data', 3, fn ($json) => 
-                        $json->hasAll(['id','name','aftertaste','price'])
+                        $json->hasAll(['id','name','slug','aftertaste','price','featured_image_url'])
                             ->where('id', 7)
                             ->where('name', 'COLD BREW COARSE GROUND COFFEE BLEND WITH CHICORY')
                             ->etc()
@@ -108,7 +110,8 @@ class ProductControllerTest extends TestCase
                             'description',
                             'roast',
                             'type',
-                            'product_variants'
+                            'product_variants',
+                            'medias'
                         ])
                         ->where('id', 3)
                         ->where('name', 'DECAF ESPRESSO ROAST COFFEE')

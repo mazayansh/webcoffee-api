@@ -11,6 +11,8 @@ class Media extends Model
 {
     use HasFactory;
 
+    protected $table = 'medias';
+
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
