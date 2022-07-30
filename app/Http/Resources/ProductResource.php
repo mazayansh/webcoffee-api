@@ -14,6 +14,9 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $original = parent::toArray($request);
+        return array_merge($original, [
+            'featured_image_url' => isset($original['featured_image_url']) ? env('APP_URL').'/storage'.$original['featured_image_url'] : '',
+        ]);
     }
 }
