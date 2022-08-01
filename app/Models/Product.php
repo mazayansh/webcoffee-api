@@ -86,8 +86,12 @@ class Product extends Model
                                 function($val, $key) use ($query) {
                                     $sort_order = $val[0] == '+' ? 'asc' : 'desc';
                                     $sort_attr = substr($val, 1);
+
+                                    if ($sort_attr != 'price') {
+                                        $sort_attr = 'products.'.$sort_attr;
+                                    }
                                     
-                                    return $query->orderBy('products.'.$sort_attr, $sort_order);
+                                    return $query->orderBy($sort_attr, $sort_order);
                                 }
                             );
                         }
