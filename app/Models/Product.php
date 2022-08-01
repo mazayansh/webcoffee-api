@@ -126,18 +126,22 @@ class Product extends Model
                                 switch ($filter_attribute) {
                                     case 'roast':
                                         if (! QueryHelper::hasJoin($query->getQuery(), 'roasts')) {
-                                            $query->join('roasts', 'products.roast_id', '=', 'roasts.id');
+                                            $query->join('roasts', 'products.roast_id', '=', 'roasts.id')
+                                                    ->addSelect('roasts.slug as roast_slug')
+                                                    ->groupBy('roast_slug');
                                         }
 
-                                        return $query->where('roasts.slug', $filter_value)->addSelect('roasts.slug as roast_slug')->groupBy('roast_slug');
+                                        return $query->where('roasts.slug', $filter_value);
 
                                         break;
                                     case 'type':
                                         if (! QueryHelper::hasJoin($query->getQuery(), 'types')) {
-                                            $query->join('types', 'products.type_id', '=', 'types.id');
+                                            $query->join('types', 'products.type_id', '=', 'types.id')
+                                                    ->addSelect('types.slug as type_slug')
+                                                    ->groupBy('type_slug');
                                         }
 
-                                        return $query->where('types.slug', $filter_value)->addSelect('types.slug as type_slug')->groupBy('type_slug');
+                                        return $query->where('types.slug', $filter_value);
 
                                         break;
                                 }
