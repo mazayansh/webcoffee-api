@@ -22,7 +22,8 @@ class CartItemResource extends JsonResource
             'grind_size' => $this->grind_size,
             'weight' => $this->productVariant->weight,
             'quantity' => $this->quantity,
-            'price' => $this->productVariant->price * $this->quantity
+            'price' => $this->productVariant->price * $this->quantity,
+            'featured_image_url' => $this->productVariant->product->medias->where('is_featured',true)->first()->path
         ];
     }
 }

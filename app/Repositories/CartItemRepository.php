@@ -33,7 +33,7 @@ class CartItemRepository implements CartItemRepositoryInterface
     public function getAllByCartId(string $cartId)
     {
         return CartItem::where('cart_id', $cartId)->with([
-            'productVariant','productVariant.product'
+            'productVariant','productVariant.product','productVariant.product.medias'
             ])->get();
     }
 
