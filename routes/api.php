@@ -11,6 +11,7 @@ use App\Http\Controllers\{
     Cart\CartItemController,
     Cart\CheckoutController,
     Cart\ShippingController,
+    Cart\ShippingInfoController,
     Order\OrderController,
     Order\OrderPaymentController
 };
@@ -51,6 +52,7 @@ Route::prefix('v1')->group(function () {
         Route::middleware(['cart_cookie.exists'])->group(function () {
             Route::get('/', [CartController::class, 'show']);
             Route::post('/cart-items', [CartItemController::class, 'store']);
+            Route::get('/shipping-info', ShippingInfoController::class);
             Route::middleware(['cart.not_empty'])->group(function () {
                 Route::post('/checkout', CheckoutController::class);
                 Route::post('/shipping', ShippingController::class);
