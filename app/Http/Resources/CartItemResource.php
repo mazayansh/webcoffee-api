@@ -14,6 +14,8 @@ class CartItemResource extends JsonResource
      */
     public function toArray($request)
     {
+        $featured_image_url = $this->productVariant->product->medias->where('is_featured',true)->first();
+
         return [
             'id' => $this->id,
             'cart_id' => $this->cart_id,
@@ -24,7 +26,7 @@ class CartItemResource extends JsonResource
             'quantity' => $this->quantity,
             'price' => $this->productVariant->price * $this->quantity,
             'price_per_item' => $this->productVariant->price,
-            'featured_image_url' => $this->productVariant->product->medias->where('is_featured',true)->first()->path
+            'featured_image_url' => $featured_image_url ? $featured_image_url->path : ''
         ];
     }
 }

@@ -26,7 +26,7 @@ class CartControllerTest extends TestCase
             ->assertJson(fn (AssertableJson $json) =>
                 $json->has('data', 3, fn ($json) => 
                     $json->hasAll([
-                            'id','cart_id','product_id','product_name','grind_size','weight','quantity','price'
+                            'id','cart_id','product_id','product_name','grind_size','weight','quantity','price','price_per_item','featured_image_url'
                         ])
                         ->where('cart_id', $cartId)
                 )
@@ -45,7 +45,7 @@ class CartControllerTest extends TestCase
             ->assertJson(fn (AssertableJson $json) =>
                 $json->has('data', 3, fn ($json) => 
                     $json->hasAll([
-                            'id','cart_id','product_id','product_name','grind_size','weight','quantity','price'
+                            'id','cart_id','product_id','product_name','grind_size','weight','quantity','price','price_per_item','featured_image_url'
                         ])
                         ->where('cart_id', $cartId)
                 )
