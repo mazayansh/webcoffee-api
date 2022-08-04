@@ -23,6 +23,7 @@ class CartItemResource extends JsonResource
             'weight' => $this->productVariant->weight,
             'quantity' => $this->quantity,
             'price' => $this->productVariant->price * $this->quantity,
+            'price_per_item' => $this->productVariant->price,
             'featured_image_url' => $this->productVariant->product->medias->where('is_featured',true)->first()->path
         ];
     }
