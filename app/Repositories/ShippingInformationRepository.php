@@ -19,7 +19,7 @@ class ShippingInformationRepository implements ShippingInformationRepositoryInte
                 break;
         }
 
-        return $model->shipping()->create($shippingInfoDetails);
+        return $model->shipping()->updateOrCreate(['shippingable_id' => $shippingable['id']], $shippingInfoDetails);
     }
 
     public function getByShippingableId(string $shippingableId)
