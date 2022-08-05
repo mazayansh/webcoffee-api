@@ -22,7 +22,7 @@ class ProductSeeder extends Seeder
                 'roast_id' => 3,
                 'type_id' => 8,
                 'description' => '<b>Profile</b>: Fragrant toffee aroma with flavors of walnuts and semi-sweet chocolate and a crisp black cherry finish.<br>
-                <b>Place: Kintamani Highlands, North Bali, Indonesia. This coffee is grown at an altitude between 3,200 and 3,900 feet, under shade trees, with orange and tangerine trees planted<br>
+                <b>Place</b>: Kintamani Highlands, North Bali, Indonesia. This coffee is grown at an altitude between 3,200 and 3,900 feet, under shade trees, with orange and tangerine trees planted<br>
                 <b>People</b>: Arabica coffee farmers in Kintamani are organized into traditional groups called Subak Abian. The groups act as rural cooperatives, which sell coffee in concert with export groups, and are founded on the Hindu philosophy of "Tri Hita Karana" (The Happiness Causes). This philosophy consists of the importance of the relationship of human beings to God, to other humans and to the environment.<br>
                 <b>Process</b>: The coffee is organically farmed, although not certified. Harvesting is done from May to October and only ripe fruit is picked. The coffee must contain 95% red fruit to be accepted for processing. The coffee is semi-washed, with a two-step sun drying process.<br>
                 <b>Pairing</b>: Chocolate brownies and bagels.',
