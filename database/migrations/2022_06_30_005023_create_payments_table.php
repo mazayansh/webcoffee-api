@@ -20,6 +20,7 @@ class CreatePaymentsTable extends Migration
             $table->string('transaction_id');
             $table->string('transaction_time');
             $table->string('payment_type');
+            $table->string('bank')->nullable();
             $table->string('va_number')->nullable();
             $table->string('bill_key')->nullable();
             $table->string('biller_code')->nullable();

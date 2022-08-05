@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Enums\PaymentMethodEnum;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Payment>
@@ -21,6 +22,7 @@ class PaymentFactory extends Factory
             'transaction_id' => fake()->uuid(),
             'transaction_time' => now(),
             'payment_type' => 'bank_transfer',
+            'bank' => PaymentMethodEnum::random(),
             'va_number' => '000',
             'created_at' => now(),
             'updated_at' => now()
