@@ -48,35 +48,44 @@ class ShippingInformationService implements ShippingInformationServiceInterface
                         string $shippingableId, 
                         string $shippingMethod)
     {
-        $originCode = config('constants.shipping.origin_code');
-        $destinationCode = $this->getShippingInfo($shippingableId)->city_code;
-        $weight = $this->cartRepository->getSumCartItemsWeight($shippingableId);
-
-        $response = Http::withHeaders([
-            'key' => env('RAJAONGKIR_API_KEY')
-        ])->asForm()->post('https://api.rajaongkir.com/starter/cost', [
-            'origin' => $originCode,
-            'destination' => $destinationCode,
-            'weight' => $weight,
-            'courier' => config('constants.shipping.courier')
-        ]);
+        $shippingOptions = $this->fetchShippingOptions($shippingableId);
 
         $shippingCost = 0;
         
-        if ($results = json_decode($response)->rajaongkir->results) {
-            for ($i=0;$i<count($results);$i++) {
-                $costs = $results[0]->costs;
-                
-                for ($j=0;$j<count($costs);$j++) {
-                    if ($costs[$j]->service == $shippingMethod) {
-                        $shippingCost = $costs[$j]->cost[0]->value;
-                        break;
-                    }
+        if ($shippingOptions) {
+            $costs = $shippingOptions[0]->costs;
+            
+            for ($j=0;$j<count($costs);$j++) {
+                if ($costs[$j]->service == $shippingMethod) {
+                    $shippingCost = $costs[$j]->cost[0]->value;
+                    break;
                 }
             }
         }
 
         return $shippingCost;
+    }
+
+    public function getShippingMethodList(string $shippingableId)
+    {
+        $shippingOptions = $this->fetchShippingOptions($shippingableId);
+
+        $shippingMethods = [];
+
+        if ($shippingOptions) {
+            $costs = $shippingOptions[0]->costs;
+                
+            for ($j=0;$j<count($costs);$j++) {
+                $shippingMethods[$j] = [
+                    'shipping_method' => $costs[$j]->service,
+                    'shipping_description' => $costs[$j]->description,
+                    'shipping_cost' => $costs[$j]->cost[0]->value,
+                    'shipping_estimated_days' => $costs[$j]->cost[0]->etd
+                ];
+            }
+        }
+
+        return $shippingMethods;
     }
 
     public function updateShippingInfo(string $shippingableId, array $shippingInfoDetails)
@@ -89,5 +98,23 @@ class ShippingInformationService implements ShippingInformationServiceInterface
         }
 
         return $shippingInfo;
+    }
+
+    private function fetchShippingOptions(string $shippingableId)
+    {
+        $originCode = config('constants.shipping.origin_code');
+        $destinationCode = $this->getShippingInfo($shippingableId)->city_code;
+        $weight = $this->cartRepository->getSumCartItemsWeight($shippingableId);
+
+        $response = Http::withHeaders([
+            'key' => env('RAJAONGKIR_API_KEY')
+        ])->asForm()->post(env('RAJAONGKIR_API_URL').'/cost', [
+            'origin' => $originCode,
+            'destination' => $destinationCode,
+            'weight' => $weight,
+            'courier' => config('constants.shipping.courier')
+        ]);
+
+        return json_decode($response)->rajaongkir->results;
     }
 }

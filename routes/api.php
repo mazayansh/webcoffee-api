@@ -12,6 +12,7 @@ use App\Http\Controllers\{
     Cart\CheckoutController,
     Cart\ShippingController,
     Cart\ShippingInfoController,
+    Cart\ShippingMethodController,
     Order\OrderController,
     Order\OrderPaymentController
 };
@@ -54,6 +55,7 @@ Route::prefix('v1')->group(function () {
             Route::post('/cart-items', [CartItemController::class, 'store']);
             Route::get('/shipping-info', ShippingInfoController::class);
             Route::middleware(['cart.not_empty'])->group(function () {
+                Route::get('/shipping-method', ShippingMethodController::class);
                 Route::post('/checkout', CheckoutController::class);
                 Route::post('/shipping', ShippingController::class);
             });
