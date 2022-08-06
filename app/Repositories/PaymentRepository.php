@@ -9,6 +9,6 @@ class PaymentRepository implements PaymentRepositoryInterface
 {
     public function save(array $paymentDetails)
     {
-        return Payment::create($paymentDetails);
+        return Payment::updateOrCreate(['order_id' => $paymentDetails['order_id']], $paymentDetails);
     }
 }
