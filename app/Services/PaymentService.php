@@ -9,6 +9,9 @@ use Midtrans\{
     CoreApi as MidtransApi,
     Transaction as MidtransTransaction
 };
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WaitingForPaymentMail;
+use Carbon\Carbon;
 
 class PaymentService implements PaymentServiceInterface
 {
@@ -119,5 +122,46 @@ class PaymentService implements PaymentServiceInterface
         }
 
         return array_merge($paymentDetails, ['order_id' => $order->id]);
+    }
+
+    public function sendWaitingForPaymentMail($shippingInfo, $paymentDetails) 
+    {
+        $paymentMethod = '';
+
+        switch ($paymentDetails['bank']) {
+            case 'bri':
+                $paymentMethod = 'BRI Virtual Account';
+                break;
+            case 'bni':
+                $paymentMethod = 'BNI Virtual Account';
+                break;
+            case 'bca':
+                $paymentMethod = 'BCA Virtual Account';
+                break;
+            case 'mandiri':
+                $paymentMethod = 'Mandiri Bill Payment';
+                break;
+            case 'permata':
+                $paymentMethod = 'Permata Virtual Account';
+                break;
+        }
+
+        $transactionTime = Carbon::createFromFormat('Y-m-d H:i:s', $paymentDetails['transaction_time'], 'Asia/Jakarta');
+        $paymentExpiredAt = $transactionTime->addDay()->isoFormat('dddd, D MMMM Y HH:mm:ss');
+
+        $mailInfo = [
+            'payment_expired_at' => $paymentExpiredAt,
+            'gross_amount' => number_format(intval($paymentDetails['gross_amount']), 0, ",", "."),
+            'payment_method' => $paymentMethod,
+            'va_number' => $paymentDetails['va_number'] ?? $paymentDetails['bill_key'].' - Biller code: '.$paymentDetails['biller_code'],
+            'customer_name' => $shippingInfo->first_name." ".$shippingInfo->last_name,
+            'address' => $shippingInfo->address,
+            'city' => $shippingInfo->city,
+            'state' => $shippingInfo->state,
+            'postcode' => $shippingInfo->postcode,
+            'phone' => $shippingInfo->phone
+        ];
+
+        Mail::to($shippingInfo->email)->send(new WaitingForPaymentMail($mailInfo));
     }
 }

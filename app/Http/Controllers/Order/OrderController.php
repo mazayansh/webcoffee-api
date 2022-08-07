@@ -45,6 +45,8 @@ class OrderController extends Controller
             $paymentDetails = $this->paymentService->chargeBankTransfer($order);
             $payment = $this->paymentService->createPayment($paymentDetails);
 
+            $this->paymentService->sendWaitingForPaymentMail($shippingInfo, $paymentDetails);
+
             return response()->json([
                 'payment_detail' => $paymentDetails
             ], 200);

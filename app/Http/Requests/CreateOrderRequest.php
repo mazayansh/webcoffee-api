@@ -28,13 +28,13 @@ class CreateOrderRequest extends FormRequest
         return [
             'payment_method' => [new Enum(PaymentMethodEnum::class)],
             'same_as_shipping_address' => 'required|boolean',
-            'first_name' => 'required_if:same_as_shipping_address,true|string|max:100',
+            'first_name' => 'required_if:same_as_shipping_address,false|string|max:100',
             'last_name' => 'nullable|string|max:100',
             'phone' => 'nullable|string|max:100',
-            'address' => 'required_if:same_as_shipping_address,true|string',
-            'city' => 'required_if:same_as_shipping_address,true|string|max:50',
-            'state' => 'required_if:same_as_shipping_address,true|string|max:50',
-            'postcode' => 'required_if:same_as_shipping_address,true|string|max:12',
+            'address' => 'required_if:same_as_shipping_address,false|string',
+            'city' => 'required_if:same_as_shipping_address,false|string|max:50',
+            'state' => 'required_if:same_as_shipping_address,false|string|max:50',
+            'postcode' => 'required_if:same_as_shipping_address,false|string|max:12',
         ];
     }
 }

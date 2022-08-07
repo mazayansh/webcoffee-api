@@ -5,10 +5,15 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Interfaces\OrderServiceInterface;
+use App\Interfaces\ShippingInformationServiceInterface;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PaymentReceivedMail;
 
 class OrderPaymentController extends Controller
 {
-    public function __construct(public OrderServiceInterface $orderService)
+    public function __construct(
+            public OrderServiceInterface $orderService, 
+            public ShippingInformationServiceInterface $shippingInformationService)
     {
 
     }
@@ -23,7 +28,15 @@ class OrderPaymentController extends Controller
 
             $this->orderService->updateOrder($orderId, ['status' => $paymentStatus]);
 
-            // send email via queue
+            $shippingInfo = $this->shippingInformationService->getShippingInfo($orderId);
+
+            $mailInfo = [
+                'settlement_time' => $notificationBody['settlement_time'],
+                'gross_amount' => number_format(intval($notificationBody['gross_amount']), 0, ",", "."),
+                'customer_name' => $shippingInfo->first_name." ".$shippingInfo->last_name
+            ];
+
+            Mail::to($shippingInfo->email)->send(new PaymentReceivedMail($mailInfo));
 
             return response()->json([
                 'message' => 'Order payment status successfully updated',
