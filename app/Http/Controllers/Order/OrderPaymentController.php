@@ -28,15 +28,19 @@ class OrderPaymentController extends Controller
 
             $this->orderService->updateOrder($orderId, ['status' => $paymentStatus]);
 
-            $shippingInfo = $this->shippingInformationService->getShippingInfo($orderId);
+            $isPaymentSuccess = ($paymentStatus == 'settlement') || ($paymentStatus == 'capture');
 
-            $mailInfo = [
-                'settlement_time' => $notificationBody['settlement_time'],
-                'gross_amount' => number_format(intval($notificationBody['gross_amount']), 0, ",", "."),
-                'customer_name' => $shippingInfo->first_name." ".$shippingInfo->last_name
-            ];
+            if ($isPaymentSuccess) {
+                $shippingInfo = $this->shippingInformationService->getShippingInfo($orderId);
 
-            Mail::to($shippingInfo->email)->send(new PaymentReceivedMail($mailInfo));
+                $mailInfo = [
+                    'settlement_time' => $notificationBody['settlement_time'],
+                    'gross_amount' => number_format(intval($notificationBody['gross_amount']), 0, ",", "."),
+                    'customer_name' => $shippingInfo->first_name." ".$shippingInfo->last_name
+                ];
+
+                Mail::to($shippingInfo->email)->send(new PaymentReceivedMail($mailInfo));
+            }
 
             return response()->json([
                 'message' => 'Order payment status successfully updated',
