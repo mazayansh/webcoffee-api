@@ -20,4 +20,9 @@ class OrderRepository implements OrderRepositoryInterface
             return false;
         }
     }
+
+    public function getById(string $orderId)
+    {
+        return Order::findOrFail($orderId)->load(['orderItems','orderItems.productVariant','orderItems.productVariant.product.medias','shipping']);
+    }
 }

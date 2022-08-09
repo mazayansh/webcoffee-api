@@ -74,6 +74,11 @@ class OrderService implements OrderServiceInterface
         }
     }
 
+    public function getOrder(string $orderId)
+    {
+        return $this->orderRepository->getById($orderId);
+    }
+
     private function calculateTotalPrice($shippingCost, $cartItems)
     {
         $totalPrice = $shippingCost;

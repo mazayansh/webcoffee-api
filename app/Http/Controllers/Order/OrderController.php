@@ -11,6 +11,7 @@ use App\Interfaces\{
 };
 use App\Http\Requests\CreateOrderRequest;
 use App\Helpers\CookieHelper;
+use App\Http\Resources\OrderResource;
 
 class OrderController extends Controller
 {
@@ -55,5 +56,12 @@ class OrderController extends Controller
                 'message' => 'Terjadi kesalahan sistem. Coba lagi atau mohon hubungi support kami'
             ], 500);
         }
+    }
+
+    public function show($orderId)
+    {
+        $order = $this->orderService->getOrder($orderId);
+
+        return new OrderResource($order);
     }
 }

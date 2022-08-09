@@ -80,7 +80,7 @@ trait DemoDataTestTrait
     {
         $order = Order::factory()->create();
 
-        OrderItem::factory(rand(1,4))->create([
+        OrderItem::factory(2)->create([
             'order_id' => $order->id
         ]);
 

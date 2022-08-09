@@ -105,4 +105,46 @@ class OrderControllerTest extends TestCase
                 ],
             ];
     }
+
+    public function test_get_order_detail_success()
+    {
+        $this->generateAccessToken();
+        $this->basicSeeding();
+        $orderId = $this->getIdNewOrder();
+
+        $response = $this->getJson('/api/v1/orders/'.$orderId);
+
+        $response->assertStatus(200)
+                ->assertJson(fn (AssertableJson $json) =>
+                    $json->has('data', fn ($json) => 
+                        $json->hasAll([
+                            'status',
+                            'order_date',
+                            'total_price',
+                            'total_weight',
+                            'total_payment'
+                        ])
+                        ->has('order_items', 2, fn ($json) =>
+                            $json->hasAll([
+                                'product_id',
+                                'product_name',
+                                'product_featured_image_url',
+                                'product_quantity',
+                                'product_price',
+                                'subtotal_price',
+                            ])
+                        )
+                        ->has('shipping_info', fn ($json) =>
+                            $json->hasAll([
+                                'courier',
+                                'fullname',
+                                'phone',
+                                'address',
+                                'shipping_cost'
+                            ])
+                        )
+                        ->etc()
+                    )->etc()
+                );
+    }
 }
