@@ -7,13 +7,13 @@ use App\Models\Product;
 
 class ProductRepository implements ProductRepositoryInterface
 {
-    public function getPaginate(array $query_params)
+    public function getPaginate(array $queryParams)
     {
         return Product::joinProductVariant()
                     ->withFeaturedImage()
-                    ->sortProduct($query_params['sort'] ?? null)
-                    ->searchProduct($query_params['search'] ?? null)
-                    ->filterProduct($query_params['filter'] ?? null)
+                    ->sortProduct($queryParams['sort'] ?? null)
+                    ->searchProduct($queryParams['search'] ?? null)
+                    ->filterProduct($queryParams['filter'] ?? null)
                     ->paginate(20);
     }
 

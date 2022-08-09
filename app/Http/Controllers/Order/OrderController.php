@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Interfaces\{
     OrderServiceInterface,
     ShippingInformationServiceInterface,
@@ -11,7 +12,8 @@ use App\Interfaces\{
 };
 use App\Http\Requests\CreateOrderRequest;
 use App\Helpers\CookieHelper;
-use App\Http\Resources\OrderResource;
+use App\Http\Resources\OrderSingleResource;
+use App\Http\Resources\OrderCollection;
 
 class OrderController extends Controller
 {
@@ -23,6 +25,14 @@ class OrderController extends Controller
     )
     {
 
+    }
+
+    public function index()
+    {
+        $userId = auth()->user()->id;
+        $orders = $this->orderService->getListPaginate($userId);
+
+        return new OrderCollection($orders);
     }
 
     public function store(CreateOrderRequest $request)
@@ -62,6 +72,6 @@ class OrderController extends Controller
     {
         $order = $this->orderService->getOrder($orderId);
 
-        return new OrderResource($order);
+        return new OrderSingleResource($order);
     }
 }

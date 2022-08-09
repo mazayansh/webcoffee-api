@@ -14,9 +14,9 @@ class ProductService implements ProductServiceInterface
 
     }
 
-    public function getListPaginate(array $query_params)
+    public function getListPaginate(array $queryParams)
     {
-        return $this->productRepository->getPaginate($query_params);
+        return $this->productRepository->getPaginate($queryParams);
     }
 
     public function getProduct(int $id)

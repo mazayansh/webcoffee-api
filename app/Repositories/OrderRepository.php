@@ -7,6 +7,13 @@ use App\Models\Order;
 
 class OrderRepository implements OrderRepositoryInterface
 {
+    public function getPaginateByUser(string $userId)
+    {
+        return Order::where('user_id',$userId)
+                    ->with(['orderItems','orderItems.productVariant.product'])
+                    ->paginate(20);
+    }
+
     public function save(array $orderDetails)
     {
         return Order::create($orderDetails);

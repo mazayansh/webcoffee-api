@@ -78,7 +78,9 @@ trait DemoDataTestTrait
 
     private function getIdNewOrder()
     {
-        $order = Order::factory()->create();
+        $order = Order::factory()->create([
+            'user_id' => auth()->user()->id ?? null
+        ]);
 
         OrderItem::factory(2)->create([
             'order_id' => $order->id

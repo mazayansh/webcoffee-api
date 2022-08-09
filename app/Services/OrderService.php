@@ -23,6 +23,12 @@ class OrderService implements OrderServiceInterface
         
     }
 
+    public function getListPaginate(string $userId)
+    {
+        return $this->orderRepository->getPaginateByUser($userId);
+    }
+
+
     public function createOrder(string $cartId, array $orderDetails)
     {
         DB::beginTransaction();

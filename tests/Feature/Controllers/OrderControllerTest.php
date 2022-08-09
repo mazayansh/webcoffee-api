@@ -147,4 +147,33 @@ class OrderControllerTest extends TestCase
                     )->etc()
                 );
     }
+
+    public function test_get_order_list_of_user_success()
+    {
+        $this->generateAccessToken();
+        $this->basicSeeding();
+        $this->getIdNewOrder();
+
+        $response = $this->getJson('/api/v1/orders');
+
+        $response->assertStatus(200)
+                ->assertJson(fn (AssertableJson $json) =>
+                    $json->has('data', 1, fn ($json) => 
+                        $json->hasAll([
+                            'status',
+                            'order_date',
+                            'order_items_count',
+                            'total_price'
+                        ])
+                        ->has('first_order_item', fn ($json) =>
+                            $json->hasAll([
+                                'product_name',
+                                'product_quantity'
+                            ])
+                        )
+                        ->etc()
+                    )->has('meta')
+                    ->etc()
+                );
+    }
 }

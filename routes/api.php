@@ -38,7 +38,10 @@ Route::prefix('v1')->group(function () {
             Route::post('/refresh', [AuthController::class, 'refresh']);
         });
         Route::get('/user-profile', [AuthController::class, 'userProfile']);
-        Route::get('/orders/{id}', [OrderController::class, 'show']);
+        Route::prefix('orders')->group(function () {
+            Route::get('/', [OrderController::class, 'index']);
+            Route::get('/{id}', [OrderController::class, 'show']);
+        });
     });
     // Roasts level
     Route::get('/roasts', [RoastController::class, 'index']);
