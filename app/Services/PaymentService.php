@@ -25,6 +25,11 @@ class PaymentService implements PaymentServiceInterface
         return $this->paymentRepository->save($paymentDetails);
     }
 
+    public function getPayment(string $orderId)
+    {
+        return $this->paymentRepository->getByOrderId($orderId);
+    }
+
     public function chargeBankTransfer($order)
     {
         MidtransConfig::$serverKey = env('MIDTRANS_SERVERKEY');

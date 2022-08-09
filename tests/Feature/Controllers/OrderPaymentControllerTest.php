@@ -55,4 +55,29 @@ class OrderPaymentControllerTest extends TestCase
                     ->where('status', 'settlement')
             );
     }
+
+    public function test_get_payment_by_order_id_success()
+    {
+        $this->generateAccessToken();
+        $this->basicSeeding();
+        $orderId = $this->getIdNewOrder();
+
+        $response = $this->getJson('/api/v1/orders/'.$orderId.'/payment');
+
+        $response->assertStatus(200)
+                ->assertJson(fn (AssertableJson $json) =>
+                    $json->has('data', fn ($json) => 
+                        $json->hasAll([
+                            'bank',
+                            'payment_method',
+                            'va_number',
+                            'bill_key',
+                            'biller_code',
+                            'total_payment'
+                        ])
+                        ->etc()
+                    )->etc()
+                );
+
+    }
 }

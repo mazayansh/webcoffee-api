@@ -4,18 +4,30 @@ namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Interfaces\OrderServiceInterface;
-use App\Interfaces\ShippingInformationServiceInterface;
+use App\Interfaces\{
+    OrderServiceInterface,
+    ShippingInformationServiceInterface,
+    PaymentServiceInterface
+};
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PaymentReceivedMail;
+use App\Http\Resources\OrderPaymentResource;
 
 class OrderPaymentController extends Controller
 {
     public function __construct(
             public OrderServiceInterface $orderService, 
-            public ShippingInformationServiceInterface $shippingInformationService)
+            public ShippingInformationServiceInterface $shippingInformationService,
+            public PaymentServiceInterface $paymentService)
     {
 
+    }
+
+    public function show($orderId)
+    {
+        $payment = $this->paymentService->getPayment($orderId);
+
+        return new OrderPaymentResource($payment);
     }
 
     public function handleNotification(Request $request)

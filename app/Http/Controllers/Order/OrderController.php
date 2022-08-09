@@ -12,8 +12,11 @@ use App\Interfaces\{
 };
 use App\Http\Requests\CreateOrderRequest;
 use App\Helpers\CookieHelper;
-use App\Http\Resources\OrderSingleResource;
-use App\Http\Resources\OrderCollection;
+use App\Http\Resources\{
+    OrderSingleResource,
+    OrderCollection,
+    OrderPaymentResource
+};
 
 class OrderController extends Controller
 {
@@ -58,9 +61,7 @@ class OrderController extends Controller
 
             $this->paymentService->sendWaitingForPaymentMail($shippingInfo, $paymentDetails);
 
-            return response()->json([
-                'payment_detail' => $paymentDetails
-            ], 200);
+            return new OrderPaymentResource($payment);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Terjadi kesalahan sistem. Coba lagi atau mohon hubungi support kami'

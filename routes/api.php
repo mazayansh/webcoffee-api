@@ -68,5 +68,6 @@ Route::prefix('v1')->group(function () {
     Route::prefix('/orders')->group(function () {
         Route::post('/', [OrderController::class, 'store'])->middleware(['cart_cookie.exists','cart.not_empty']);
         Route::post('/payment/notification/handling', [OrderPaymentController::class, 'handleNotification']);
+        Route::get('/{id}/payment', [OrderPaymentController::class, 'show']);
     });
 });

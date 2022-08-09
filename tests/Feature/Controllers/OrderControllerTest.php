@@ -47,7 +47,7 @@ class OrderControllerTest extends TestCase
                         ])->withCookie(config('constants.cookie_name.cart'), $cartId)
                         ->post('/api/v1/orders', $formData);
 
-        $response->assertStatus(200)
+        $response->assertStatus(201)
                 ->assertJson($expectedResponse);
     }
 
@@ -65,7 +65,7 @@ class OrderControllerTest extends TestCase
         ];
 
         $basePaymentDetails = [
-            'transaction_id', 'transaction_time', 'payment_type', 'bank', 'gross_amount', 'message', 'fraud_status', 'order_id'
+            'payment_method', 'bank', 'total_payment', 'va_number', 'bill_key', 'biller_code'
         ];
 
         // [array $formData, $expectedResponse]
@@ -73,10 +73,10 @@ class OrderControllerTest extends TestCase
                 [
                     array_merge($billingAddress, ['payment_method' => 'bni']), 
                     fn (AssertableJson $json) =>
-                        $json->has('payment_detail', fn ($json) => 
+                        $json->has('data', fn ($json) => 
                             $json->hasAll($basePaymentDetails)
                                 ->hasAll(['va_number'])
-                                ->where('payment_type', 'bank_transfer')
+                                ->where('payment_method', 'BNI Virtual Account')
                                 ->where('bank', 'bni')
                                 ->etc()
                         )
@@ -84,10 +84,10 @@ class OrderControllerTest extends TestCase
                 [
                     array_merge($billingAddress, ['payment_method' => 'mandiri']),
                     fn (AssertableJson $json) =>
-                        $json->has('payment_detail', fn ($json) => 
+                        $json->has('data', fn ($json) => 
                             $json->hasAll($basePaymentDetails)
                                 ->hasAll(['bill_key', 'biller_code'])
-                                ->where('payment_type', 'echannel')
+                                ->where('payment_method', 'Mandiri Bill Payment')
                                 ->where('bank', 'mandiri')
                                 ->etc()
                         )
@@ -95,10 +95,10 @@ class OrderControllerTest extends TestCase
                 [
                     array_merge($billingAddress, ['payment_method' => 'permata']),
                     fn (AssertableJson $json) =>
-                        $json->has('payment_detail', fn ($json) => 
+                        $json->has('data', fn ($json) => 
                             $json->hasAll($basePaymentDetails)
                                 ->hasAll(['va_number'])
-                                ->where('payment_type', 'bank_transfer')
+                                ->where('payment_method', 'Permata Virtual Account')
                                 ->where('bank', 'permata')
                                 ->etc()
                         )

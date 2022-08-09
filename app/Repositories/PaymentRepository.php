@@ -11,4 +11,9 @@ class PaymentRepository implements PaymentRepositoryInterface
     {
         return Payment::updateOrCreate(['order_id' => $paymentDetails['order_id']], $paymentDetails);
     }
+
+    public function getByOrderId(string $orderId)
+    {
+        return Payment::where('order_id', $orderId)->with(['order'])->first();
+    }
 }
