@@ -15,9 +15,11 @@ class OrderSingleResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'status' => $this->status_translated,
+            'order_id' => $this->id,
+            'order_status' => $this->status_translated,
             'order_date' => $this->order_date,
             'order_items' => OrderItemResource::collection($this->orderItems),
+            'order_quantity' => $this->orderItems->sum('quantity'),
             'shipping_info' => [
                 'courier' => config('constants.shipping.courier'),
                 'fullname' => $this->shipping->fullname,
@@ -25,6 +27,7 @@ class OrderSingleResource extends JsonResource
                 'address' => $this->shipping->address,
                 'shipping_cost' => $this->shipping->shipping_cost
             ],
+            'payment_method' => $this->payment->payment_method,
             'total_price' => $this->total_price,
             'total_weight' => $this->orderItems->reduce(
                                 function ($carry, $item) {

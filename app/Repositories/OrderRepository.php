@@ -10,7 +10,7 @@ class OrderRepository implements OrderRepositoryInterface
     public function getPaginateByUser(string $userId)
     {
         return Order::where('user_id',$userId)
-                    ->with(['orderItems','orderItems.productVariant.product'])
+                    ->with(['orderItems','orderItems.productVariant.product','orderItems.productVariant.product.medias'])
                     ->paginate(20);
     }
 

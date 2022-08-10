@@ -17,9 +17,10 @@ class OrderItemResource extends JsonResource
         $featured_image_url = optional($this->productVariant->product->medias->where('is_featured', 1)->first())->path;
 
         return [
+            'id' => $this->id,
             'product_id' => $this->productVariant->product_id,
             'product_name' => $this->productVariant->product->name,
-            'product_featured_image_url'  => isset($featured_image_url) ? env('APP_URL').'/storage'.$featured_image_url : '',
+            'product_featured_image_url'  => isset($featured_image_url) ? $featured_image_url : '',
             'product_quantity' => $this->quantity,
             'product_price' => $this->productVariant->price,
             'subtotal_price' => $this->subtotal_price
