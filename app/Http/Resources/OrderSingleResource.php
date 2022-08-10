@@ -21,7 +21,7 @@ class OrderSingleResource extends JsonResource
             'order_items' => OrderItemResource::collection($this->orderItems),
             'order_quantity' => $this->orderItems->sum('quantity'),
             'shipping_info' => [
-                'courier' => config('constants.shipping.courier'),
+                'courier' => strtoupper(config('constants.shipping.courier')),
                 'fullname' => $this->shipping->fullname,
                 'phone' => $this->shipping->phone,
                 'address' => $this->shipping->address,

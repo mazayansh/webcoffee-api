@@ -7,6 +7,6 @@ return [
     'shipping' => [
         'origin' => 'Sragen',
         'origin_code' => 427,
-        'courier' => 'JNE'
+        'courier' => 'jne'
     ]
 ];
