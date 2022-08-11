@@ -54,7 +54,7 @@ class OrderControllerTest extends TestCase
     public function paymentMethodData(): array
     {
         $billingAddress = [
-            'same_as_shipping_address' => 0,
+            'same_as_shipping_address' => 'false',
             'first_name' => 'Imam',
             'last_name' => 'Setiawan',
             'phone' => '03144141',
@@ -118,14 +118,18 @@ class OrderControllerTest extends TestCase
                 ->assertJson(fn (AssertableJson $json) =>
                     $json->has('data', fn ($json) => 
                         $json->hasAll([
-                            'status',
+                            'order_id',
+                            'order_status',
                             'order_date',
+                            'order_quantity',
                             'total_price',
                             'total_weight',
-                            'total_payment'
+                            'total_payment',
+                            'payment_method'
                         ])
                         ->has('order_items', 2, fn ($json) =>
                             $json->hasAll([
+                                'id',
                                 'product_id',
                                 'product_name',
                                 'product_featured_image_url',
@@ -160,15 +164,18 @@ class OrderControllerTest extends TestCase
                 ->assertJson(fn (AssertableJson $json) =>
                     $json->has('data', 1, fn ($json) => 
                         $json->hasAll([
-                            'status',
+                            'order_id',
+                            'order_status',
                             'order_date',
                             'order_items_count',
+                            'other_order_items_quantity',
                             'total_price'
                         ])
                         ->has('first_order_item', fn ($json) =>
                             $json->hasAll([
                                 'product_name',
-                                'product_quantity'
+                                'product_quantity',
+                                'product_featured_image_url'
                             ])
                         )
                         ->etc()
