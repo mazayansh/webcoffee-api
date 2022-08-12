@@ -32,8 +32,8 @@ class PaymentService implements PaymentServiceInterface
 
     public function chargeBankTransfer($order)
     {
-        MidtransConfig::$serverKey = env('MIDTRANS_SERVERKEY');
-        MidtransConfig::$isProduction = env('production')? true : false;
+        MidtransConfig::$serverKey = config('constants.midtrans.server_key');
+        MidtransConfig::$isProduction = config('app.env') == "production" ? true : false;
 
         $transactionDetails = [
             "order_id" => $order->id,

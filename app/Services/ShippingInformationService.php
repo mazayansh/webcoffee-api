@@ -107,8 +107,8 @@ class ShippingInformationService implements ShippingInformationServiceInterface
         $weight = $this->cartRepository->getSumCartItemsWeight($shippingableId);
 
         $response = Http::withHeaders([
-            'key' => env('RAJAONGKIR_API_KEY')
-        ])->asForm()->post(env('RAJAONGKIR_API_URL').'/cost', [
+            'key' => config('constants.rajaongkir.api_key')
+        ])->asForm()->post(config('constants.rajaongkir.api_url').'/cost', [
             'origin' => $originCode,
             'destination' => $destinationCode,
             'weight' => $weight,
