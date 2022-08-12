@@ -28,13 +28,13 @@ class OrderSingleResource extends JsonResource
                 'shipping_cost' => $this->shipping->shipping_cost
             ],
             'payment_method' => $this->payment->payment_method,
-            'total_price' => $this->total_price,
+            'total_price' => $this->orderItems->sum('subtotal_price'),
             'total_weight' => $this->orderItems->reduce(
                                 function ($carry, $item) {
                                     return $carry + $item->productVariant->weight;
                                 }, 0
                             ),
-            'total_payment' => $this->orderItems->sum('subtotal_price') + $this->shipping->shipping_cost
+            'total_payment' => $this->total_price
         ];
     }
 }
