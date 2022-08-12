@@ -11,6 +11,7 @@ class OrderRepository implements OrderRepositoryInterface
     {
         return Order::where('user_id',$userId)
                     ->with(['orderItems','orderItems.productVariant.product','orderItems.productVariant.product.medias'])
+                    ->orderBy('created_at','desc')
                     ->paginate(20);
     }
 
