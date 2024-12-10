@@ -12,20 +12,15 @@ class CreateProductsTable extends Migration
      * @return void
      */
     public function up()
-    {
-        Schema::create('products', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->unsignedTinyInteger('roast_id');
-            $table->foreign('roast_id')->references('id')->on('roasts');
-            $table->unsignedTinyInteger('type_id');
-            $table->foreign('type_id')->references('id')->on('types');
-            $table->text('description');
-            $table->string('aftertaste');
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('products', function (Blueprint $table) {
+        $table->id(); // bigint unsigned (default)
+        $table->string('name');
+        $table->timestamps();
+    });
+    
+}
+
 
     /**
      * Reverse the migrations.
